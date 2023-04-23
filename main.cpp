@@ -371,7 +371,7 @@ using namespace std;
 //}
 
 
-/**Day 12 Tuesday 17/4*/
+/**Day 12 Tuesday 18/4*/
 //struct TreeNode {
 //    int val;
 //    TreeNode *left;
@@ -412,6 +412,140 @@ using namespace std;
 //    }
 //};
 
+
+/**Day 13 Wednesday 19/4*/
+//struct TreeNode {
+//    int val;
+//    TreeNode *left;
+//    TreeNode *right;
+//    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+//    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+//    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+//};
+//
+//class Solution {
+//public:
+//    int widthOfBinaryTree(TreeNode* root) {
+//        int max_width{0}, current_width{0};
+//        int size;
+//        pair<TreeNode*, int> current, first_in_level;
+//        queue<pair<TreeNode*, int>> bfs_queue;
+//        bfs_queue.push({root, 1});
+//        while (!bfs_queue.empty()) {
+//            size = bfs_queue.size();
+//            current_width = 0;
+//            first_in_level = bfs_queue.front();
+//            while (size--) {
+//                current = bfs_queue.front();
+//                current_width = max(current_width, current.second - first_in_level.second);
+//                bfs_queue.pop();
+//                if (current.first->left) {
+//                    bfs_queue.push({current.first->left, current.second * 2});
+//                }
+//                if (current.first->right)
+//                    bfs_queue.push({current.first->right, current.second * 2 + 1});
+//            }
+//            max_width = max(max_width, current_width);
+//        }
+//        return max_width + 1;
+//    }
+//};
+
+
+/**Day 14 Friday 21/4 REVISIT, Incorrect*/
+//class Solution {
+//private:
+//    int mem[101][101][101];
+//public:
+//    int takeOrLeave(int n, int m, int start, vector<int>& group, vector<int>& profit) {
+//        m = max(m, 0);
+//
+//        if (start >= group.size() || n <= 0)
+//            return m <= 0;
+//
+//        if (mem[n][m][start] != -1)
+//            return mem[n][m][start];
+//
+//        mem[n][m][start] = ((m <= 0) + takeOrLeave(n - group[start], m - profit[start], start + 1, group, profit) +
+//                takeOrLeave(n, m, start + 1, group, profit)) % (int)(1e9 + 7);
+//
+//        return mem[n][m][start];
+//    }
+//
+//    int profitableSchemes(int n, int minProfit, vector<int>& group, vector<int>& profit) {
+//        memset(mem, -1, sizeof mem);
+//        return takeOrLeave(n, minProfit, 0, group, profit) % (int)(1e9 + 7);
+//    }
+//};
+
+
+/**Day 15 Saturday 22/4*/
+//class Solution {
+//private:
+//    int mem[501][501];
+//    int countInsertions(const string &s, int start, int end) {
+//        if (start >= end)
+//            return 0;
+//
+//        if (mem[start][end] != -1)
+//            return mem[start][end];
+//
+//        if (s[start] == s[end])
+//            mem[start][end] = countInsertions(s, start + 1, end - 1);
+//        else
+//            mem[start][end] = 1 + min(countInsertions(s, start + 1, end), countInsertions(s, start, end - 1));
+//
+//        return mem[start][end];
+//    }
+//public:
+//    int minInsertions(string s) {
+//        memset(mem, -1, sizeof mem);
+//        return countInsertions(s, 0, s.size() - 1);
+//    }
+//};
+
+
+/**Day 16 Sunday 23/4*/
+//class Solution {
+//private:
+//    int dp[100001] = {0};
+//    int mod = 1e9 + 7;
+//
+//    int count(const string &s, int k, int start) {
+//
+//        if (start == s.size())
+//            return 1;
+//
+//        if (s[start] == '0')
+//            return 0;
+//
+//        if (dp[start])
+//            return dp[start];
+//
+//        int cnt = 0;
+//
+//        string temp;
+//        for (int i = 1; i <= s.size() - start; i++) {
+//            temp = s.substr(start, i);
+//            if (stoi(temp) > k) {
+//                break;
+//            }
+//            cnt = (cnt % mod + count(s, k, start + i) % mod) % mod;
+//        }
+//
+//        cnt %= mod;
+//        dp[start] = cnt;
+//        return cnt;
+//    }
+//
+//public:
+//    int numberOfArrays(string s, int k) {
+//        return count(s, k, 0);
+//    }
+//};
+
+
 int main() {
-    cout << "?";
+    Solution sol;
+    cout << sol.numberOfArrays("1000", 1000);
 }
