@@ -545,7 +545,28 @@ using namespace std;
 //};
 
 
+/**Day 17 Monday 24/4*/
+//int lastStoneWeight(vector<int>& stones) {
+//    priority_queue<int> stones_queue;
+//    for (int stone : stones)
+//        stones_queue.push(stone);
+//
+//    int stone1, stone2;
+//    while (stones_queue.size() > 1) {
+//        stone1 = stones_queue.top();
+//        stones_queue.pop();
+//        stone2 = stones_queue.top();
+//        stones_queue.pop();
+//
+//        if (stone1 - stone2) {
+//            stones_queue.push(stone1 - stone2);
+//        }
+//    }
+//    if (stones_queue.empty())
+//        return 0;
+//    return stones_queue.top();
+//}
+
 int main() {
-    Solution sol;
-    cout << sol.numberOfArrays("1000", 1000);
+
 }
