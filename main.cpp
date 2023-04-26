@@ -567,6 +567,39 @@ using namespace std;
 //    return stones_queue.top();
 //}
 
-int main() {
 
+/**Day 18 Tuesday 25/4*/
+//class SmallestInfiniteSet {
+//private:
+//    int infinite_set_top;
+//    set<int> added_set;
+//public:
+//    SmallestInfiniteSet(): infinite_set_top(1) {}
+//
+//    int popSmallest() {
+//        if (added_set.empty()) {
+//            return infinite_set_top++;
+//        } else {
+//            int rv = *added_set.begin();
+//            added_set.erase(rv);
+//            return rv;
+//        }
+//    }
+//
+//    void addBack(int num) {
+//        if (num < infinite_set_top)
+//            added_set.insert(num);
+//    }
+//};
+
+
+/**Day 18 Wednesday 26/4*/
+int addDigits(int num) {
+    if (num == 0) return 0;
+    if (num % 9 == 0) return 9;
+    return num % 9;
+}
+
+int main() {
+    cout << addDigits(10);
 }
