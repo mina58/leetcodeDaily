@@ -594,12 +594,58 @@ using namespace std;
 
 
 /**Day 18 Wednesday 26/4*/
-int addDigits(int num) {
-    if (num == 0) return 0;
-    if (num % 9 == 0) return 9;
-    return num % 9;
-}
+// int addDigits(int num) {
+//     if (num == 0) return 0;
+//     if (num % 9 == 0) return 9;
+//     return num % 9;
+// }
+
+
+/**Day 19 Wednesday 27/4*/
+//int bulbSwitch(int n) {
+//    return (int) Math.sqrt(n);
+//}
+
+
+/**Day 20 Thursday 28/4*/
+//bool matched(string s1, string s2) {
+//    int differences = 0;
+//    for (int i = 0; i < s1.size() && differences < 3; i++) {
+//        if (s1[i] != s2[i])
+//            differences++;
+//    }
+//    return differences < 3;
+//}
+//
+//int count_groups(unordered_set<string> &current_set) {
+//    if (current_set.empty())
+//        return 0;
+//    vector<string> new_set;
+//    new_set.push_back(*current_set.begin());
+//    current_set.erase(current_set.begin());
+//    for (int i = 0; i < new_set.size(); i++) {
+//        for (auto it = current_set.begin(); it != current_set.end();) {
+//            if (matched(new_set[i], *it)) {
+//                new_set.push_back(*it);
+//                current_set.erase(it++);
+//            } else
+//                it++;
+//        }
+//    }
+//
+//    return 1 + count_groups(current_set);
+//}
+//
+//int numSimilarGroups(vector<string> &strs) {
+//    unordered_set<string> initial_set;
+//    for (const string &str: strs) {
+//        initial_set.insert(str);
+//    }
+//
+//    return count_groups(initial_set);
+//}
 
 int main() {
-    cout << addDigits(10);
+    vector<string> v({"omv","ovm"});
+    cout << numSimilarGroups(v);
 }
