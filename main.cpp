@@ -743,6 +743,7 @@ using namespace std;
 //    }
 //};
 
+
 int main() {
     vector<string> v({"omv","ovm"});
     cout << numSimilarGroups(v);
