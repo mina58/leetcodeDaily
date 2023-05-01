@@ -744,7 +744,122 @@ using namespace std;
 //};
 
 
+/**Day 22 Sunday 30/4*/
+//class Solution {
+//private:
+//    vector<vector<int>> type_1_edges;
+//    vector<vector<int>> type_2_edges;
+//    vector<vector<int>> type_3_edges;
+//
+//    int removable_edges = 0;
+//
+//    vector<int> groups;
+//
+//    int current_group;
+//
+//    void classify_edges(vector<vector<int>> &edges) {
+//        for (vector<int> edge: edges) {
+//            if (edge[0] == 1)
+//                type_1_edges.push_back(edge);
+//            else if (edge[0] == 2)
+//                type_2_edges.push_back(edge);
+//            else
+//                type_3_edges.push_back(edge);
+//        }
+//    }
+//
+//
+//    void place_type_3_edges() {
+//        int u, v, temp;
+//        for (vector<int> edge: type_3_edges) {
+//            u = edge[1];
+//            v = edge[2];
+//            if (groups[u] && groups[u] == groups[v]) {
+//                removable_edges++;
+//                continue;
+//            }
+//            if (groups[u]) {
+//                if (groups[v]) {
+//                    temp = groups[v];
+//                    for (int &g: groups)
+//                        if (g == temp)
+//                            g = groups[u];
+//                } else {
+//                    groups[v] = groups[u];
+//                }
+//            } else if (groups[v]) {
+//                groups[u] = groups[v];
+//            } else {
+//                groups[u] = groups[v] = ++current_group;
+//            }
+//        }
+//    }
+//
+//    bool place_edges(vector<vector<int>> &edges, vector<int> groups) {
+//        int u, v, temp;
+//        for (vector<int> edge: edges) {
+//            u = edge[1];
+//            v = edge[2];
+//            if (groups[u] && groups[u] == groups[v]) {
+//                removable_edges++;
+//                continue;
+//            }
+//            if (groups[u]) {
+//                if (groups[v]) {
+//                    temp = groups[v];
+//                    for (int &g: groups)
+//                        if (g == temp)
+//                            g = groups[u];
+//                } else {
+//                    groups[v] = groups[u];
+//                }
+//            } else if (groups[v]) {
+//                groups[u] = groups[v];
+//            } else {
+//                groups[u] = groups[v] = ++current_group;
+//            }
+//        }
+//        for (int i = 1; i < groups.size() - 1; i++) {
+//            if (groups[i] != groups[i + 1] || (!groups[i] || !groups[i + 1]))
+//                return false;
+//        }
+//        return true;
+//    }
+//
+//public:
+//    int maxNumEdgesToRemove(int n, vector<vector<int>> &edges) {
+//        classify_edges(edges);
+//        groups = vector<int>(n + 1);
+//        current_group = 0;
+//        place_type_3_edges();
+//        if (place_edges(type_1_edges, groups) && place_edges(type_2_edges, groups))
+//            return removable_edges;
+//        return -1;
+//    }
+//};
+
+
+/*Day23 Monday 1/5*/
+double average(vector<int>& salary) {
+    int min = salary[0], max = salary[0];
+    int sum = 0;
+    for (int num : salary) {
+        sum += num;
+        if (num < min)
+            min = num;
+        if (num > max)
+            max = num;
+    }
+    return (sum - min - max)/(salary.size() - 2.0);
+}
+
 int main() {
-    vector<string> v({"omv","ovm"});
-    cout << numSimilarGroups(v);
+    Solution sol;
+    vector<vector<int>> v({{3, 1, 2},
+                           {3, 2, 3},
+                           {1, 1, 3},
+                           {1, 2, 4},
+                           {1, 1, 2},
+                           {2, 3, 4}});
+    cout << sol.maxNumEdgesToRemove(4, v);
 }
