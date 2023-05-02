@@ -839,18 +839,31 @@ using namespace std;
 //};
 
 
-/*Day23 Monday 1/5*/
-double average(vector<int>& salary) {
-    int min = salary[0], max = salary[0];
-    int sum = 0;
-    for (int num : salary) {
-        sum += num;
-        if (num < min)
-            min = num;
-        if (num > max)
-            max = num;
+/**Day 23 Monday 1/5*/
+//double average(vector<int>& salary) {
+//    int min = salary[0], max = salary[0];
+//    int sum = 0;
+//    for (int num : salary) {
+//        sum += num;
+//        if (num < min)
+//            min = num;
+//        if (num > max)
+//            max = num;
+//    }
+//    return (sum - min - max)/(salary.size() - 2.0);
+//}
+
+
+/**Day 24 Tuesday 2/5*/
+int arraySign(vector<int>& nums) {
+    int ans = 1;
+    for (int num : nums) {
+        if (num < 0)
+            ans *= -1;
+        else if (num == 0)
+            return 0;
     }
-    return (sum - min - max)/(salary.size() - 2.0);
+    return ans;
 }
 
 int main() {
