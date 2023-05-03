@@ -855,16 +855,31 @@ using namespace std;
 
 
 /**Day 24 Tuesday 2/5*/
-int arraySign(vector<int>& nums) {
-    int ans = 1;
-    for (int num : nums) {
-        if (num < 0)
-            ans *= -1;
-        else if (num == 0)
-            return 0;
-    }
-    return ans;
-}
+//int arraySign(vector<int>& nums) {
+//    int ans = 1;
+//    for (int num : nums) {
+//        if (num < 0)
+//            ans *= -1;
+//        else if (num == 0)
+//            return 0;
+//    }
+//    return ans;
+//}
+
+
+/**Day 25 Wednesday 3/5*/
+//def findDifference(self, nums1, nums2):
+//    """
+//    :type nums1: List[int]
+//    :type nums2: List[int]
+//    :rtype: List[List[int]]
+//    """
+//    set1 = set(nums1)
+//    set2 = set(nums2)
+//    list1 = [num for num in set1 if num not in set2]
+//    list2 = [num for num in set2 if num not in set1]
+//    return [list1, list2]
+
 
 int main() {
     Solution sol;
