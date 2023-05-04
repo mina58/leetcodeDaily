@@ -319,7 +319,7 @@ using namespace std;
 //};
 
 
-/**Day 9 Sunday 16/4*/
+/**Day 10 Sunday 16/4*/
 //long long ways(const vector<string> &words, const string &target, int ws, int ts, vector<vector<long long>> &DP,
 //               const vector<vector<int>> &countChar) {
 //    if (ts == target.size())
@@ -593,7 +593,7 @@ using namespace std;
 //};
 
 
-/**Day 18 Wednesday 26/4*/
+/**Day 19 Wednesday 26/4*/
 // int addDigits(int num) {
 //     if (num == 0) return 0;
 //     if (num % 9 == 0) return 9;
@@ -601,13 +601,13 @@ using namespace std;
 // }
 
 
-/**Day 19 Thursday 27/4*/
+/**Day 20 Thursday 27/4*/
 //int bulbSwitch(int n) {
 //    return (int) Math.sqrt(n);
 //}
 
 
-/**Day 20 Friday 28/4*/
+/**Day 21 Friday 28/4*/
 //bool matched(string s1, string s2) {
 //    int differences = 0;
 //    for (int i = 0; i < s1.size() && differences < 3; i++) {
@@ -646,7 +646,7 @@ using namespace std;
 //}
 
 
-/**Day 21 Saturday 29/4 REVISIT(DISJOINT-SET UNION)*/
+/**Day 22 Saturday 29/4 REVISIT(DISJOINT-SET UNION)*/
 //class UnionFind {
 //public:
 //    vector<int> group;
@@ -744,7 +744,7 @@ using namespace std;
 //};
 
 
-/**Day 22 Sunday 30/4*/
+/**Day 23 Sunday 30/4*/
 //class Solution {
 //private:
 //    vector<vector<int>> type_1_edges;
@@ -839,7 +839,7 @@ using namespace std;
 //};
 
 
-/**Day 23 Monday 1/5*/
+/**Day 24 Monday 1/5*/
 //double average(vector<int>& salary) {
 //    int min = salary[0], max = salary[0];
 //    int sum = 0;
@@ -854,7 +854,7 @@ using namespace std;
 //}
 
 
-/**Day 24 Tuesday 2/5*/
+/**Day 25 Tuesday 2/5*/
 //int arraySign(vector<int>& nums) {
 //    int ans = 1;
 //    for (int num : nums) {
@@ -867,7 +867,7 @@ using namespace std;
 //}
 
 
-/**Day 25 Wednesday 3/5*/
+/**Day 26 Wednesday 3/5*/
 //def findDifference(self, nums1, nums2):
 //    """
 //    :type nums1: List[int]
@@ -881,13 +881,64 @@ using namespace std;
 //    return [list1, list2]
 
 
+/**Day 27 Thursday 4/5*/
+//string predictPartyVictory(string senate) {
+//    vector<bool> can_vote(senate.size(), true);
+//    int r_votes{0}, d_votes{0};
+//    int r = count(senate.begin(), senate.end(), 'R');
+//    int d = senate.size() - r;
+//    int s = senate.size();
+//    for (int i = 0; i < senate.size(); i++) {
+//        if (!can_vote[i % s])
+//            continue;
+//        if (senate[i % s] == 'R') {
+//            if (d_votes) {
+//                can_vote[i % s] = false;
+//                r--;
+//                d_votes--;
+//            } else {
+//                r_votes++;
+//            }
+//        } else {
+//            if (r_votes) {
+//                can_vote[i % s] = false;
+//                d--;
+//                r_votes--;
+//            } else {
+//                d_votes++;
+//            }
+//        }
+//    }
+//    for (int i = 0; i < INT_MAX; i++) {
+//        if (!can_vote[i % s])
+//            continue;
+//        if (senate[i % s] == 'R') {
+//            if (d_votes){
+//                can_vote[i % s] = false;
+//                r--;
+//                d_votes--;
+//            } else {
+//                if (r > d)
+//                    return "Radiant";
+//                else
+//                    r_votes++;
+//            }
+//        } else {
+//            if (r_votes){
+//                can_vote[i % s] = false;
+//                d--;
+//                r_votes--;
+//            } else {
+//                if (d > r)
+//                    return "Dire";
+//                else
+//                    d_votes++;
+//            }
+//        }
+//    }
+//    return "?";
+//}
+
 int main() {
-    Solution sol;
-    vector<vector<int>> v({{3, 1, 2},
-                           {3, 2, 3},
-                           {1, 1, 3},
-                           {1, 2, 4},
-                           {1, 1, 2},
-                           {2, 3, 4}});
-    cout << sol.maxNumEdgesToRemove(4, v);
+    cout << predictPartyVictory("RDRDDDRDDRDRDDRRRRRD");
 }
