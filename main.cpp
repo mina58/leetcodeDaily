@@ -939,6 +939,32 @@ using namespace std;
 //    return "?";
 //}
 
+
+/**Day 28 Friday 5/5*/
+bool isVowel(char c) {
+    return c == 'a' || c == 'e' || c == 'u' || c == 'i' || c == 'o';
+}
+
+int maxVowels(string s, int k) {
+
+    int max_v{0}, current{0};
+    int i;
+    for (i = 0; i < k; i++) {
+        if (isVowel(s[i]))
+            current++;
+    }
+    max_v = current;
+    for (; i < s.size(); i++) {
+        if (isVowel(s[i]))
+            current++;
+        if (isVowel(s[i - k]))
+            current--;
+        max_v = max(max_v, current);
+    }
+    return max_v;
+}
+
+
 int main() {
     cout << predictPartyVictory("RDRDDDRDDRDRDDRRRRRD");
 }
