@@ -941,30 +941,105 @@ using namespace std;
 
 
 /**Day 28 Friday 5/5*/
-bool isVowel(char c) {
-    return c == 'a' || c == 'e' || c == 'u' || c == 'i' || c == 'o';
-}
+//bool isVowel(char c) {
+//    return c == 'a' || c == 'e' || c == 'u' || c == 'i' || c == 'o';
+//}
+//
+//int maxVowels(string s, int k) {
+//
+//    int max_v{0}, current{0};
+//    int i;
+//    for (i = 0; i < k; i++) {
+//        if (isVowel(s[i]))
+//            current++;
+//    }
+//    max_v = current;
+//    for (; i < s.size(); i++) {
+//        if (isVowel(s[i]))
+//            current++;
+//        if (isVowel(s[i - k]))
+//            current--;
+//        max_v = max(max_v, current);
+//    }
+//    return max_v;
+//}
 
-int maxVowels(string s, int k) {
 
-    int max_v{0}, current{0};
-    int i;
-    for (i = 0; i < k; i++) {
-        if (isVowel(s[i]))
-            current++;
-    }
-    max_v = current;
-    for (; i < s.size(); i++) {
-        if (isVowel(s[i]))
-            current++;
-        if (isVowel(s[i - k]))
-            current--;
-        max_v = max(max_v, current);
-    }
-    return max_v;
-}
+/**Day 29 Saturday 6/5 REVISIT*/
+//class Solution:
+//    def numSubseq(self, nums: List[int], target: int) -> int:
+//        n = len(nums)
+//        mod = 10 ** 9 + 7
+//        nums.sort()
+//
+//        answer = 0
+//
+//        for left in range(n):
+//        # Find the insertion position for `target - nums[left]`
+//        # 'right' equals the insertion index minus 1.
+//        right = bisect.bisect_right(nums, target - nums[left]) - 1
+//        if right >= left:
+//        answer += pow(2, right - left, mod)
+//        return answer % mod
+//
 
+
+///**Day 30 Sunday 7/5*/
+//DP solution -> n^2 :(
+//class Solution {
+//private:
+//    int findSubSeqLength(int idx, vector<int> &obstacles, vector<int> &memo) {
+//        if (idx < 0)
+//            return 0;
+//        if (memo[idx])
+//            return memo[idx];
+//        int length = 1;
+//        int sub_length = 0;
+//
+//        for (int i = idx - 1; i >= length - 1; i--) {
+//                sub_length = findSubSeqLength(i, obstacles, memo);
+//                if (obstacles[i] <= obstacles[idx])
+//                    length = max(length, 1 + sub_length);
+//
+//        }
+//
+//        memo[idx] = length;
+//        return length;
+//    }
+//
+//public:
+//    vector<int> longestObstacleCourseAtEachPosition(vector<int>& obstacles) {
+//        vector<int> memo(obstacles.size());
+//        findSubSeqLength(obstacles.size() - 1, obstacles, memo);
+//
+//        return memo;
+//    }
+//};
+
+//Binary search -> nlogn :)
+//class Solution {
+//public:
+//    vector<int> longestObstacleCourseAtEachPosition(vector<int>& obstacles) {
+//        int n = obstacles.size();
+//
+//        // lis[i] records the lowest increasing sequence of length i + 1.
+//        vector<int> answer(n, 1), lis;
+//
+//        for (int i = 0; i < n; ++i) {
+//            // Find the rightmost insertion position idx.
+//            int idx = upper_bound(lis.begin(), lis.end(), obstacles[i]) - lis.begin();
+//            if (idx == lis.size())
+//                lis.push_back(obstacles[i]);
+//            else
+//                lis[idx] = obstacles[i];
+//            answer[i] = idx + 1;
+//        }
+//        return answer;
+//    }
+//};
 
 int main() {
-    cout << predictPartyVictory("RDRDDDRDDRDRDDRRRRRD");
+    vector<int> v({2, 3, 4, 5, 1, 6});
+    Solution sol;
+    sol.longestObstacleCourseAtEachPosition(v);
 }
