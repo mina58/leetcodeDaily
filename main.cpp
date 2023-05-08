@@ -984,7 +984,7 @@ using namespace std;
 //
 
 
-///**Day 30 Sunday 7/5*/
+/**Day 30 Sunday 7/5*/
 //DP solution -> n^2 :(
 //class Solution {
 //private:
@@ -1015,7 +1015,7 @@ using namespace std;
 //        return memo;
 //    }
 //};
-
+//
 //Binary search -> nlogn :)
 //class Solution {
 //public:
@@ -1037,6 +1037,19 @@ using namespace std;
 //        return answer;
 //    }
 //};
+
+
+/**Day 31 Monday 8/5*/
+int diagonalSum(vector<vector<int>>& mat) {
+    int ans = 0;
+    int s = mat.size();
+    for (int i = 0; i < s; i++) {
+        ans += mat[i][i];
+        if (s - i - 1 != i)
+            ans += mat[s - i - 1][i];
+    }
+    return ans;
+}
 
 int main() {
     vector<int> v({2, 3, 4, 5, 1, 6});
