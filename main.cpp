@@ -1040,19 +1040,81 @@ using namespace std;
 
 
 /**Day 31 Monday 8/5*/
-int diagonalSum(vector<vector<int>>& mat) {
-    int ans = 0;
-    int s = mat.size();
-    for (int i = 0; i < s; i++) {
-        ans += mat[i][i];
-        if (s - i - 1 != i)
-            ans += mat[s - i - 1][i];
-    }
-    return ans;
-}
+//int diagonalSum(vector<vector<int>>& mat) {
+//    int ans = 0;
+//    int s = mat.size();
+//    for (int i = 0; i < s; i++) {
+//        ans += mat[i][i];
+//        if (s - i - 1 != i)
+//            ans += mat[s - i - 1][i];
+//    }
+//    return ans;
+//}
+
+
+/**Day 32 Tuesday 9/5*/
+//vector<int> ans;
+//
+//void traverse_square(vector<vector<int>> &matrix, int start_row, int start_col, int end_row, int end_col) {
+//    if (start_row > end_row || start_col > end_col)
+//        return;
+//
+//    for (int i = start_col; i <= end_col; i++) {
+//        ans.push_back(matrix[start_row][i]);
+//    }
+//    for (int i = start_row + 1; i <= end_row; i++) {
+//        ans.push_back(matrix[i][end_col]);
+//    }
+//    if (start_row < end_row)
+//        for (int i = end_col - 1; i >= start_col; i--) {
+//            ans.push_back(matrix[end_row][i]);
+//        }
+//    if (start_col < end_col)
+//        for (int i = end_row - 1; i > start_row; i--) {
+//            ans.push_back(matrix[i][start_col]);
+//        }
+//
+//    traverse_square(matrix, start_row + 1, start_col + 1, end_row - 1, end_col - 1);
+//}
+//
+//
+//vector<int> spiralOrder(vector<vector<int>>& matrix) {
+//    traverse_square(matrix, 0, 0, matrix.size() - 1, matrix[0].size() - 1);
+//    return ans;
+//}
+
+
+/*Day 33 Wednesday 10/5*/
+//class Solution {
+//public:
+//
+//    int floorMod(int x, int y) {
+//        return ((x % y) + y) % y;
+//    }
+//
+//    vector<vector<int>> generateMatrix(int n) {
+//        vector<vector<int>> result (n, vector<int>(n));
+//        int cnt = 1;
+//        int dir[4][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+//        int d = 0;
+//        int row = 0;
+//        int col = 0;
+//        while (cnt <= n * n) {
+//            result[row][col] = cnt++;
+//            int r = floorMod(row + dir[d][0], n);
+//            int c = floorMod(col + dir[d][1], n);
+//            // change direction if next cell is non zero
+//            if (result[r][c] != 0) d = (d + 1) % 4;
+//            row += dir[d][0];
+//            col += dir[d][1];
+//        }
+//        return result;
+//    }
+//};
+
 
 int main() {
-    vector<int> v({2, 3, 4, 5, 1, 6});
-    Solution sol;
-    sol.longestObstacleCourseAtEachPosition(v);
+    vector<vector<int>> m({{1,2,3,4},{5,6,7,8},{9,10,11,12}});
+    spiralOrder(m);
+    return 0;
 }
