@@ -251,6 +251,7 @@ using namespace std;
 //    else return "/";
 //}
 
+
 /**Day 7 Thursday 13/4*/
 //bool validateStackSequences(vector<int>& pushed, vector<int>& popped) {
 //    int pushed_idx{1}, popped_idx;
@@ -1137,7 +1138,35 @@ using namespace std;
 //    }
 //};
 
+
+/**Day 35 Friday 12/5*/
+class Solution {
+private:
+    long long arr[100000];
+
+    long long try_start(vector<vector<int>>& questions, int start) {
+        if (start >= questions.size())
+            return 0;
+
+        if (arr[start])
+            return arr[start];
+
+        long long skipped = try_start(questions, start + 1);
+        long long picked = questions[start][0] + try_start(questions, start + questions[start][1] + 1);
+        arr[start] = max(picked, skipped);
+        return arr[start];
+    }
+
+public:
+    long long mostPoints(vector<vector<int>>& questions) {
+        return try_start(questions, 0);
+    }
+};
+
+
 int main() {
-    vector<vector<int>> m({{1,2,3,4},{5,6,7,8},{9,10,11,12}});
+    vector<vector<int>> m({{3,2},{4,3},{4,4},{2,5}});
+    Solution sol;
+    cout << sol.mostPoints(m);
     return 0;
 }
