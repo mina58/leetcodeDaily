@@ -1140,33 +1140,151 @@ using namespace std;
 
 
 /**Day 35 Friday 12/5*/
+//class Solution {
+//private:
+//    long long arr[100000];
+//
+//    long long try_start(vector<vector<int>>& questions, int start) {
+//        if (start >= questions.size())
+//            return 0;
+//
+//        if (arr[start])
+//            return arr[start];
+//
+//        long long skipped = try_start(questions, start + 1);
+//        long long picked = questions[start][0] + try_start(questions, start + questions[start][1] + 1);
+//        arr[start] = max(picked, skipped);
+//        return arr[start];
+//    }
+//
+//public:
+//    long long mostPoints(vector<vector<int>>& questions) {
+//        return try_start(questions, 0);
+//    }
+//};
+
+
+/**Day 36 Saturday 13/5*/
+//class Solution {
+//private:
+//    int memo[100001];
+//    int mod = 1e9 + 7;
+//
+//    int count_start(int low, int high, int zero, int one, int current_length) {
+//        if (current_length > high)
+//            return 0;
+//
+//        if (memo[current_length] != -1)
+//            return memo[current_length];
+//
+//        int choose_zero, choose_one;
+//        choose_zero = count_start(low, high, zero, one, current_length + zero) % mod;
+//        choose_one = count_start(low, high, zero, one, current_length + one) % mod;
+//        memo[current_length] = ((current_length >= low) + choose_one + choose_zero) % mod;
+//        return memo[current_length];
+//    }
+//
+//public:
+//    int countGoodStrings(int low, int high, int zero, int one) {
+//        memset(memo, -1, sizeof memo);
+//        return count_start(low, high, zero, one, 0);
+//    }
+//};
+
+
+/**Day 37 Sunday 14/5 REVISIT*/
+//class Solution {
+//public:
+//    int maxScore(vector<int>& nums) {
+//        int maxStates = 1 << nums.size(); // 2^(nums array size)
+//        int finalMask = maxStates - 1;
+//
+//        // 'dp[i]' stores max score we can get after picking remaining numbers represented by 'i'.
+//        vector<int> dp(maxStates);
+//
+//        // Iterate on all possible states one-by-one.
+//        for (int state = finalMask; state >= 0; state -= 1) {
+//            // If we have picked all numbers, we know we can't get more score as no number is remaining.
+//            if (state == finalMask) {
+//                dp[state] = 0;
+//                continue;
+//            }
+//
+//            int numbersTaken = __builtin_popcount(state);
+//            int pairsFormed = numbersTaken / 2;
+//            // States representing even numbers are taken are only valid.
+//            if (numbersTaken % 2) {
+//                continue;
+//            }
+//
+//            // We have picked 'pairsFormed' pairs, we try all combinations of one more pair now.
+//            // We itearte on two numbers using two nested for loops.
+//            for (int firstIndex = 0; firstIndex < nums.size(); firstIndex += 1) {
+//                for (int secondIndex = firstIndex + 1; secondIndex < nums.size(); secondIndex += 1) {
+//                    // We only choose those numbers which were not already picked.
+//                    if (((state >> firstIndex) & 1) == 1 || ((state >> secondIndex) & 1) == 1) {
+//                        continue;
+//                    }
+//                    int currentScore = (pairsFormed + 1) * __gcd(nums[firstIndex], nums[secondIndex]);
+//                    int stateAfterPickingCurrPair = state | (1 << firstIndex) | (1 << secondIndex);
+//                    int remainingScore = dp[stateAfterPickingCurrPair];
+//                    dp[state] = max(dp[state], currentScore + remainingScore);
+//                }
+//            }
+//        }
+//
+//        // Returning score we get from 'n' remaining numbers of array.
+//        return dp[0];
+//    }
+//};
+
+
+/**Day 38 Monday 15/5*/
+struct ListNode {
+    int val;
+    ListNode *next;
+
+    ListNode() : val(0), next(nullptr) {}
+
+    ListNode(int x) : val(x), next(nullptr) {}
+
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
+};
+
 class Solution {
-private:
-    long long arr[100000];
-
-    long long try_start(vector<vector<int>>& questions, int start) {
-        if (start >= questions.size())
-            return 0;
-
-        if (arr[start])
-            return arr[start];
-
-        long long skipped = try_start(questions, start + 1);
-        long long picked = questions[start][0] + try_start(questions, start + questions[start][1] + 1);
-        arr[start] = max(picked, skipped);
-        return arr[start];
-    }
-
 public:
-    long long mostPoints(vector<vector<int>>& questions) {
-        return try_start(questions, 0);
+    ListNode *swapNodes(ListNode *head, int k) {
+        int n{};
+        ListNode *cur = head;
+        while (cur) {
+            n++;
+            cur = cur->next;
+        }
+
+        ListNode *node1, *node2;
+        int val1, val2;
+        cur = head;
+        for (int i = 0; i < n; i++, cur = cur->next) {
+            if (i == k - 1) {
+                val1 = cur->val;
+                node1 = cur;
+            }
+            if (i == n - k) {
+                val2 = cur->val;
+                node2 = cur;
+            }
+        }
+
+        node1->val = val2;
+        node2->val = val1;
+
+        return head;
     }
 };
 
 
 int main() {
-    vector<vector<int>> m({{3,2},{4,3},{4,4},{2,5}});
+    ListNode *head = new ListNode(100, new ListNode(90));
     Solution sol;
-    cout << sol.mostPoints(m);
-    return 0;
+    sol.swapNodes(head, 2);
 }
