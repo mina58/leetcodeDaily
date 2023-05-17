@@ -1240,6 +1240,72 @@ using namespace std;
 
 
 /**Day 38 Monday 15/5*/
+//struct ListNode {
+//    int val;
+//    ListNode *next;
+//
+//    ListNode() : val(0), next(nullptr) {}
+//
+//    ListNode(int x) : val(x), next(nullptr) {}
+//
+//    ListNode(int x, ListNode *next) : val(x), next(next) {}
+//};
+//
+//class Solution {
+//public:
+//    ListNode *swapNodes(ListNode *head, int k) {
+//        int n{};
+//        ListNode *cur = head;
+//        while (cur) {
+//            n++;
+//            cur = cur->next;
+//        }
+//
+//        ListNode *node1, *node2;
+//        int val1, val2;
+//        cur = head;
+//        for (int i = 0; i < n; i++, cur = cur->next) {
+//            if (i == k - 1) {
+//                val1 = cur->val;
+//                node1 = cur;
+//            }
+//            if (i == n - k) {
+//                val2 = cur->val;
+//                node2 = cur;
+//            }
+//        }
+//
+//        node1->val = val2;
+//        node2->val = val1;
+//
+//        return head;
+//    }
+//};
+
+
+/**Day 39 Tuesday 16/5*/
+//class Solution {
+//public:
+//    ListNode* swapPairs(ListNode* head) {
+//        ListNode *cur = head, *temp, *prev{nullptr};
+//        while (cur && cur->next) {
+//            temp = cur->next;
+//            cur->next = temp->next;
+//            temp->next = cur;
+//            if (cur == head)
+//                head = temp;
+//
+//            if (prev)
+//                prev->next = temp;
+//            prev = cur;
+//            cur = cur->next;
+//        }
+//        return head;
+//    }
+//};
+
+
+/**Day 40 Wednesday 17/5*/
 struct ListNode {
     int val;
     ListNode *next;
@@ -1252,39 +1318,50 @@ struct ListNode {
 };
 
 class Solution {
+private:
+    ListNode *reverse_linked_list(ListNode *head) {
+        if (!head->next)
+            return head;
+
+        ListNode *first, *second, *third;
+        first = head;
+        second = head->next;
+        third = second->next;
+        first->next = nullptr;
+        while (second) {
+            second->next = first;
+            first = second;
+            second = third;
+            if (third)
+                third = third->next;
+        }
+        return first;
+    }
+
 public:
-    ListNode *swapNodes(ListNode *head, int k) {
-        int n{};
-        ListNode *cur = head;
-        while (cur) {
-            n++;
-            cur = cur->next;
+    int pairSum(ListNode *head) {
+        ListNode *slow{head}, *fast{head};
+        while (fast) {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        ListNode *halfHead = reverse_linked_list(slow);
+        int rv = 0;
+        ListNode *leftCur{head}, *rightCur{halfHead};
+        while (leftCur && rightCur) {
+            rv = max(leftCur->val + rightCur->val, rv);
+            leftCur = leftCur->next;
+            rightCur = rightCur->next;
         }
 
-        ListNode *node1, *node2;
-        int val1, val2;
-        cur = head;
-        for (int i = 0; i < n; i++, cur = cur->next) {
-            if (i == k - 1) {
-                val1 = cur->val;
-                node1 = cur;
-            }
-            if (i == n - k) {
-                val2 = cur->val;
-                node2 = cur;
-            }
-        }
+        return rv;
 
-        node1->val = val2;
-        node2->val = val1;
-
-        return head;
     }
 };
 
 
 int main() {
-    ListNode *head = new ListNode(100, new ListNode(90));
+    ListNode *head = new ListNode(5, new ListNode(4, new ListNode(2, new ListNode(1))));
     Solution sol;
-    sol.swapNodes(head, 2);
+    cout << sol.pairSum(head);
 }
