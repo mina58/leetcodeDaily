@@ -1306,59 +1306,78 @@ using namespace std;
 
 
 /**Day 40 Wednesday 17/5*/
-struct ListNode {
-    int val;
-    ListNode *next;
+//struct ListNode {
+//    int val;
+//    ListNode *next;
+//
+//    ListNode() : val(0), next(nullptr) {}
+//
+//    ListNode(int x) : val(x), next(nullptr) {}
+//
+//    ListNode(int x, ListNode *next) : val(x), next(next) {}
+//};
+//
+//class Solution {
+//private:
+//    ListNode *reverse_linked_list(ListNode *head) {
+//        if (!head->next)
+//            return head;
+//
+//        ListNode *first, *second, *third;
+//        first = head;
+//        second = head->next;
+//        third = second->next;
+//        first->next = nullptr;
+//        while (second) {
+//            second->next = first;
+//            first = second;
+//            second = third;
+//            if (third)
+//                third = third->next;
+//        }
+//        return first;
+//    }
+//
+//public:
+//    int pairSum(ListNode *head) {
+//        ListNode *slow{head}, *fast{head};
+//        while (fast) {
+//            slow = slow->next;
+//            fast = fast->next->next;
+//        }
+//        ListNode *halfHead = reverse_linked_list(slow);
+//        int rv = 0;
+//        ListNode *leftCur{head}, *rightCur{halfHead};
+//        while (leftCur && rightCur) {
+//            rv = max(leftCur->val + rightCur->val, rv);
+//            leftCur = leftCur->next;
+//            rightCur = rightCur->next;
+//        }
+//
+//        return rv;
+//
+//    }
+//};
 
-    ListNode() : val(0), next(nullptr) {}
 
-    ListNode(int x) : val(x), next(nullptr) {}
-
-    ListNode(int x, ListNode *next) : val(x), next(next) {}
-};
-
+/**Day 41 Thursday 18/5*/
 class Solution {
-private:
-    ListNode *reverse_linked_list(ListNode *head) {
-        if (!head->next)
-            return head;
-
-        ListNode *first, *second, *third;
-        first = head;
-        second = head->next;
-        third = second->next;
-        first->next = nullptr;
-        while (second) {
-            second->next = first;
-            first = second;
-            second = third;
-            if (third)
-                third = third->next;
-        }
-        return first;
-    }
-
 public:
-    int pairSum(ListNode *head) {
-        ListNode *slow{head}, *fast{head};
-        while (fast) {
-            slow = slow->next;
-            fast = fast->next->next;
-        }
-        ListNode *halfHead = reverse_linked_list(slow);
-        int rv = 0;
-        ListNode *leftCur{head}, *rightCur{halfHead};
-        while (leftCur && rightCur) {
-            rv = max(leftCur->val + rightCur->val, rv);
-            leftCur = leftCur->next;
-            rightCur = rightCur->next;
+    vector<int> findSmallestSetOfVertices(int n, vector<vector<int>>& edges) {
+        vector<bool> isRoot(n, true);
+        for (vector<int> edge : edges) {
+            isRoot[edge[1]] = false;
         }
 
-        return rv;
+        vector<int> roots;
+        for (int i = 0; i < n; i++) {
+            if (isRoot[i])
+                roots.push_back(i);
+        }
 
+        return roots;
     }
 };
-
 
 int main() {
     ListNode *head = new ListNode(5, new ListNode(4, new ListNode(2, new ListNode(1))));
