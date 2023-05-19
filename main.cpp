@@ -1361,21 +1361,51 @@ using namespace std;
 
 
 /**Day 41 Thursday 18/5*/
+//class Solution {
+//public:
+//    vector<int> findSmallestSetOfVertices(int n, vector<vector<int>>& edges) {
+//        vector<bool> isRoot(n, true);
+//        for (vector<int> edge : edges) {
+//            isRoot[edge[1]] = false;
+//        }
+//
+//        vector<int> roots;
+//        for (int i = 0; i < n; i++) {
+//            if (isRoot[i])
+//                roots.push_back(i);
+//        }
+//
+//        return roots;
+//    }
+//};
+
+
+/**Day 42 Friday 19/5*/
 class Solution {
+private:
+    bool dfs(int node, vector<vector<int>>& graph, vector<int> &groups ,int group) {
+        if (groups[node])
+            return groups[node] == group;
+
+        groups[node] = group;
+
+        for (int neighbour : graph[node]) {
+            if (!dfs(neighbour, graph, groups, 3 - group))
+                return false;
+        }
+        return true;
+    }
 public:
-    vector<int> findSmallestSetOfVertices(int n, vector<vector<int>>& edges) {
-        vector<bool> isRoot(n, true);
-        for (vector<int> edge : edges) {
-            isRoot[edge[1]] = false;
-        }
+    bool isBipartite(vector<vector<int>>& graph) {
+        vector<int> groups(graph.size(), 0);
+        bool isBipartite = true;
 
-        vector<int> roots;
-        for (int i = 0; i < n; i++) {
-            if (isRoot[i])
-                roots.push_back(i);
+        for (int node = 0; node < graph.size() && isBipartite; node++) {
+            if (!groups[node]) {
+                isBipartite = dfs(node, graph, groups, 1);
+            }
         }
-
-        return roots;
+        return isBipartite;
     }
 };
 
