@@ -1381,36 +1381,171 @@ using namespace std;
 
 
 /**Day 42 Friday 19/5*/
-class Solution {
-private:
-    bool dfs(int node, vector<vector<int>>& graph, vector<int> &groups ,int group) {
-        if (groups[node])
-            return groups[node] == group;
+//class Solution {
+//private:
+//    bool dfs(int node, vector<vector<int>>& graph, vector<int> &groups ,int group) {
+//        if (groups[node])
+//            return groups[node] == group;
+//
+//        groups[node] = group;
+//
+//        for (int neighbour : graph[node]) {
+//            if (!dfs(neighbour, graph, groups, 3 - group))
+//                return false;
+//        }
+//        return true;
+//    }
+//public:
+//    bool isBipartite(vector<vector<int>>& graph) {
+//        vector<int> groups(graph.size(), 0);
+//        bool isBipartite = true;
+//
+//        for (int node = 0; node < graph.size() && isBipartite; node++) {
+//            if (!groups[node]) {
+//                isBipartite = dfs(node, graph, groups, 1);
+//            }
+//        }
+//        return isBipartite;
+//    }
+//};
 
-        groups[node] = group;
 
-        for (int neighbour : graph[node]) {
-            if (!dfs(neighbour, graph, groups, 3 - group))
-                return false;
-        }
-        return true;
+/**Day 43 Saturday 20/5 NOT MY SOLUTION, REVISIT*/
+//class Solution {
+//public:
+//    vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
+//        unordered_map<string, unordered_map<string, double>> graph = buildGraph(equations, values);
+//        vector<double> results;
+//
+//        for (const auto& query : queries) {
+//            const string& dividend = query[0];
+//            const string& divisor = query[1];
+//
+//            if (graph.find(dividend) == graph.end() || graph.find(divisor) == graph.end()) {
+//                results.push_back(-1.0);
+//            } else {
+//                results.push_back(bfs(dividend, divisor, graph));
+//            }
+//        }
+//
+//        return results;
+//    }
+//
+//private:
+//    unordered_map<string, unordered_map<string, double>> buildGraph(const vector<vector<string>>& equations, const vector<double>& values) {
+//        unordered_map<string, unordered_map<string, double>> graph;
+//
+//        for (int i = 0; i < equations.size(); i++) {
+//            const string& dividend = equations[i][0];
+//            const string& divisor = equations[i][1];
+//            double value = values[i];
+//
+//            graph[dividend][divisor] = value;
+//            graph[divisor][dividend] = 1.0 / value;
+//        }
+//
+//        return graph;
+//    }
+//
+//    double bfs(const string& start, const string& end, unordered_map<string, unordered_map<string, double>>& graph) {
+//        queue<pair<string, double>> q;
+//        unordered_set<string> visited;
+//        q.push({start, 1.0});
+//
+//        while (!q.empty()) {
+//            string node = q.front().first;
+//            double value = q.front().second;
+//            q.pop();
+//
+//            if (node == end) {
+//                return value;
+//            }
+//
+//            visited.insert(node);
+//
+//            for (const auto& neighbor : graph[node]) {
+//                const string& neighborNode = neighbor.first;
+//                double neighborValue = neighbor.second;
+//
+//                if (visited.find(neighborNode) == visited.end()) {
+//                    q.push({neighborNode, value * neighborValue});
+//                }
+//            }
+//        }
+//
+//        return -1.0;
+//    }
+//};
+
+
+/**Day 44 Sunday 21/5*/
+int rows[4] = {1, 0, -1, 0};
+int cols[4] = {0, 1, 0, -1};
+
+bool isValid(int i, int j, int n) {
+    return i >= 0 && j >= 0 && i < n && j < n;
+}
+
+void dfs(vector<vector<bool>> &visited, int i, int j, vector<vector<int>> &grid, queue<pair<int, int>> &bfs_queue) {
+    visited[i][j] = true;
+    bfs_queue.emplace(i, j);
+    for (int neighbour = 0; neighbour < 4; neighbour++) {
+        int neigh_row = i + rows[neighbour];
+        int neigh_col = j + cols[neighbour];
+        int n = grid.size();
+        if (isValid(neigh_row, neigh_col, n) && !visited[neigh_row][neigh_col] && grid[neigh_row][neigh_col])
+            dfs(visited, neigh_row, neigh_col, grid, bfs_queue);
     }
-public:
-    bool isBipartite(vector<vector<int>>& graph) {
-        vector<int> groups(graph.size(), 0);
-        bool isBipartite = true;
+}
 
-        for (int node = 0; node < graph.size() && isBipartite; node++) {
-            if (!groups[node]) {
-                isBipartite = dfs(node, graph, groups, 1);
+void add_neighbours(vector<vector<bool>> &visited, int i, int j, vector<vector<int>> &grid,
+                    queue<pair<int, int>> &bfs_queue) {
+    for (int neighbour = 0; neighbour < 4; neighbour++) {
+        int neigh_row = i + rows[neighbour];
+        int neigh_col = j + cols[neighbour];
+        int n = grid.size();
+        if (isValid(neigh_row, neigh_col, n) && !visited[neigh_row][neigh_col]) {
+            bfs_queue.emplace(neigh_row, neigh_col);
+            visited[neigh_row][neigh_col] = true;
+        }
+    }
+}
+
+int shortestBridge(vector<vector<int>> &grid) {
+    int n = grid.size();
+    queue<pair<int, int>> bfs_queue;
+    vector<vector<bool>> visited(n, vector<bool>(n, false));
+    bool foundFirstIsland = false;
+
+    for (int i = 0; i < n && !foundFirstIsland; i++) {
+        for (int j = 0; j < n && !foundFirstIsland; j++) {
+            if (grid[i][j]) {
+                dfs(visited, i, j, grid, bfs_queue);
+                foundFirstIsland = true;
             }
         }
-        return isBipartite;
     }
-};
+
+    int shortest_path = 0;
+    int queue_size;
+    int cur_i, cur_j;
+    bool pathFound = false;
+    while (!bfs_queue.empty() && !pathFound) {
+        queue_size = bfs_queue.size();
+        while (queue_size-- && !pathFound) {
+            cur_i = bfs_queue.front().first;
+            cur_j = bfs_queue.front().second;
+            add_neighbours(visited, cur_i, cur_j, grid, bfs_queue);
+            if (shortest_path && grid[cur_i][cur_j])
+                pathFound = true;
+            bfs_queue.pop();
+        }
+        shortest_path += !pathFound;
+    }
+    return shortest_path - 1;
+}
 
 int main() {
-    ListNode *head = new ListNode(5, new ListNode(4, new ListNode(2, new ListNode(1))));
-    Solution sol;
-    cout << sol.pairSum(head);
+    vector<vector<int>> v({{0,1,0},{0,0,0},{0,0,1}});
+    cout << shortestBridge(v);
 }
