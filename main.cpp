@@ -1479,73 +1479,123 @@ using namespace std;
 
 
 /**Day 44 Sunday 21/5*/
-int rows[4] = {1, 0, -1, 0};
-int cols[4] = {0, 1, 0, -1};
+//int rows[4] = {1, 0, -1, 0};
+//int cols[4] = {0, 1, 0, -1};
+//
+//bool isValid(int i, int j, int n) {
+//    return i >= 0 && j >= 0 && i < n && j < n;
+//}
+//
+//void dfs(vector<vector<bool>> &visited, int i, int j, vector<vector<int>> &grid, queue<pair<int, int>> &bfs_queue) {
+//    visited[i][j] = true;
+//    bfs_queue.emplace(i, j);
+//    for (int neighbour = 0; neighbour < 4; neighbour++) {
+//        int neigh_row = i + rows[neighbour];
+//        int neigh_col = j + cols[neighbour];
+//        int n = grid.size();
+//        if (isValid(neigh_row, neigh_col, n) && !visited[neigh_row][neigh_col] && grid[neigh_row][neigh_col])
+//            dfs(visited, neigh_row, neigh_col, grid, bfs_queue);
+//    }
+//}
+//
+//void add_neighbours(vector<vector<bool>> &visited, int i, int j, vector<vector<int>> &grid,
+//                    queue<pair<int, int>> &bfs_queue) {
+//    for (int neighbour = 0; neighbour < 4; neighbour++) {
+//        int neigh_row = i + rows[neighbour];
+//        int neigh_col = j + cols[neighbour];
+//        int n = grid.size();
+//        if (isValid(neigh_row, neigh_col, n) && !visited[neigh_row][neigh_col]) {
+//            bfs_queue.emplace(neigh_row, neigh_col);
+//            visited[neigh_row][neigh_col] = true;
+//        }
+//    }
+//}
+//
+//int shortestBridge(vector<vector<int>> &grid) {
+//    int n = grid.size();
+//    queue<pair<int, int>> bfs_queue;
+//    vector<vector<bool>> visited(n, vector<bool>(n, false));
+//    bool foundFirstIsland = false;
+//
+//    for (int i = 0; i < n && !foundFirstIsland; i++) {
+//        for (int j = 0; j < n && !foundFirstIsland; j++) {
+//            if (grid[i][j]) {
+//                dfs(visited, i, j, grid, bfs_queue);
+//                foundFirstIsland = true;
+//            }
+//        }
+//    }
+//
+//    int shortest_path = 0;
+//    int queue_size;
+//    int cur_i, cur_j;
+//    bool pathFound = false;
+//    while (!bfs_queue.empty() && !pathFound) {
+//        queue_size = bfs_queue.size();
+//        while (queue_size-- && !pathFound) {
+//            cur_i = bfs_queue.front().first;
+//            cur_j = bfs_queue.front().second;
+//            add_neighbours(visited, cur_i, cur_j, grid, bfs_queue);
+//            if (shortest_path && grid[cur_i][cur_j])
+//                pathFound = true;
+//            bfs_queue.pop();
+//        }
+//        shortest_path += !pathFound;
+//    }
+//    return shortest_path - 1;
+//}
 
-bool isValid(int i, int j, int n) {
-    return i >= 0 && j >= 0 && i < n && j < n;
-}
 
-void dfs(vector<vector<bool>> &visited, int i, int j, vector<vector<int>> &grid, queue<pair<int, int>> &bfs_queue) {
-    visited[i][j] = true;
-    bfs_queue.emplace(i, j);
-    for (int neighbour = 0; neighbour < 4; neighbour++) {
-        int neigh_row = i + rows[neighbour];
-        int neigh_col = j + cols[neighbour];
-        int n = grid.size();
-        if (isValid(neigh_row, neigh_col, n) && !visited[neigh_row][neigh_col] && grid[neigh_row][neigh_col])
-            dfs(visited, neigh_row, neigh_col, grid, bfs_queue);
-    }
-}
+/**Day 45 Saturday 27/5 WRONG, REVISIT, ZERO SUM*/
+//int dp(vector<int> &stoneValue, int current_stone, int moves_left, vector<vector<int>> &memo) {
+//    if (moves_left <= 0 || current_stone >= stoneValue.size())
+//        return INT_MIN;
+//
+//    if (memo[current_stone][moves_left - 1] != INT_MIN)
+//        return memo[current_stone][moves_left - 1];
+//
+//    int current_best = INT_MIN;
+//
+//    for (int i = 0; i < 3; i++) {
+//        current_best = max(current_best, dp(stoneValue, current_stone + i + 1, moves_left - i - 1, memo));
+//    }
+//
+//    return memo[current_stone][moves_left - 1] = stoneValue[current_stone] + current_best;
+//}
+//
+//string stoneGameIII(vector<int> &stoneValue) {
+//    vector<vector<int>> memo(stoneValue.size(), vector<int>(3, INT_MIN));
+//    int alice = dp(stoneValue, 0, 3, memo);
+//    int best_first_move = 0;
+//    for (int i = 1; i < 3; i++) {
+//        if (memo[0][i] > memo[0][best_first_move])
+//            best_first_move = 1;
+//    }
+//
+//    if (best_first_move + 1 > stoneValue.size()) {
+//        if (memo[0][best_first_move] > 0)
+//            return "Alice";
+//        else if (memo[0][best_first_move] < 0)
+//            return "Bob";
+//        else
+//            return "Tie";
+//    }
+//    int bob = memo[best_first_move + 1][0];
+//
+//    for (int i = 1; i < 3; i++) {
+//        bob = max(bob, memo[best_first_move + 1][i]);
+//    }
+//
+//    if (alice > bob)
+//        return "Alice";
+//    else if (bob > alice)
+//        return "Bob";
+//    else
+//        return "Tie";
+//}
 
-void add_neighbours(vector<vector<bool>> &visited, int i, int j, vector<vector<int>> &grid,
-                    queue<pair<int, int>> &bfs_queue) {
-    for (int neighbour = 0; neighbour < 4; neighbour++) {
-        int neigh_row = i + rows[neighbour];
-        int neigh_col = j + cols[neighbour];
-        int n = grid.size();
-        if (isValid(neigh_row, neigh_col, n) && !visited[neigh_row][neigh_col]) {
-            bfs_queue.emplace(neigh_row, neigh_col);
-            visited[neigh_row][neigh_col] = true;
-        }
-    }
-}
-
-int shortestBridge(vector<vector<int>> &grid) {
-    int n = grid.size();
-    queue<pair<int, int>> bfs_queue;
-    vector<vector<bool>> visited(n, vector<bool>(n, false));
-    bool foundFirstIsland = false;
-
-    for (int i = 0; i < n && !foundFirstIsland; i++) {
-        for (int j = 0; j < n && !foundFirstIsland; j++) {
-            if (grid[i][j]) {
-                dfs(visited, i, j, grid, bfs_queue);
-                foundFirstIsland = true;
-            }
-        }
-    }
-
-    int shortest_path = 0;
-    int queue_size;
-    int cur_i, cur_j;
-    bool pathFound = false;
-    while (!bfs_queue.empty() && !pathFound) {
-        queue_size = bfs_queue.size();
-        while (queue_size-- && !pathFound) {
-            cur_i = bfs_queue.front().first;
-            cur_j = bfs_queue.front().second;
-            add_neighbours(visited, cur_i, cur_j, grid, bfs_queue);
-            if (shortest_path && grid[cur_i][cur_j])
-                pathFound = true;
-            bfs_queue.pop();
-        }
-        shortest_path += !pathFound;
-    }
-    return shortest_path - 1;
-}
 
 int main() {
-    vector<vector<int>> v({{0,1,0},{0,0,0},{0,0,1}});
-    cout << shortestBridge(v);
+    vector<int> v = {1, 2, 3, 7};
+    cout << stoneGameIII(v);
 }
