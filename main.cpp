@@ -2,6 +2,14 @@
 
 using namespace std;
 
+// Pair hash function
+struct pair_hash_function {
+    size_t operator()(const pair<int,
+            int> &x) const {
+        return x.first ^ x.second;
+    }
+};
+
 /**Day 1*/
 //bool validPosition(vector<vector<int>> &grid, int row, int col, int height, int width) {
 //    return row >= 0 && col >= 0 && row < height && col < width && grid[row][col];
@@ -1595,7 +1603,68 @@ using namespace std;
 //}
 
 
+
+/**Day 46 Thursday 1/6*/
+int rows[8] = {1, 0, -1, 0, 1, 1, -1, -1};
+int cols[8] = {0, 1, 0, -1, 1, -1, 1, -1};
+
+bool is_valid(int i, int j, int n, int m) {
+    return i >= 0 && i < n && j >= 0 && j < m;
+}
+
+
+void visit_neighbours(queue<pair<int, int>> &bfs_queue, unordered_set<pair<int, int>, pair_hash_function> &visited,
+                      vector<vector<int>> &grid, int i, int j) {
+    int cur_row, cur_col;
+    for (int cur = 0; cur < 8; cur++) {
+        cur_row = i + rows[cur];
+        cur_col = j + cols[cur];
+        if (is_valid(cur_row, cur_col, grid.size(), grid[0].size())) {
+            if (!grid[cur_row][cur_col] && !visited.count({cur_row, cur_col})) {
+                bfs_queue.emplace(cur_row, cur_col);
+                visited.insert({cur_row, cur_col});
+            }
+        }
+    }
+}
+
+
+int shortestPathBinaryMatrix(vector<vector<int>> &grid) {
+    int path = 0;
+    queue<pair<int, int>> bfs_queue;
+    int goal = grid.size() - 1;
+    unordered_set<pair<int, int>, pair_hash_function> visited;
+    if (grid[0][0])
+        return -1;
+    bfs_queue.emplace(0, 0);
+    visited.insert({0, 0});
+    int queue_size;
+    int cur_i, cur_j;
+    bool found = false;
+    while (!bfs_queue.empty() && !found) {
+        queue_size = bfs_queue.size();
+        while (queue_size--) {
+            cur_i = bfs_queue.front().first;
+            cur_j = bfs_queue.front().second;
+            if (cur_i == goal && cur_j == goal) {
+                found = true;
+                break;
+            }
+            visit_neighbours(bfs_queue, visited, grid, cur_i, cur_j);
+            bfs_queue.pop();
+        }
+        path++;
+    }
+    if (cur_j == goal && cur_i == goal)
+        return path;
+    else
+        return -1;
+}
+
+
 int main() {
-    vector<int> v = {1, 2, 3, 7};
-    cout << stoneGameIII(v);
+    vector<vector<int>> v = {{0, 0, 0},
+                             {1, 1, 1},
+                             {1, 1, 0}};
+    cout << shortestPathBinaryMatrix(v);
 }
