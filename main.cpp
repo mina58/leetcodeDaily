@@ -4,8 +4,7 @@ using namespace std;
 
 // Pair hash function
 struct pair_hash_function {
-    size_t operator()(const pair<int,
-            int> &x) const {
+    size_t operator()(const pair<int, int> &x) const {
         return x.first ^ x.second;
     }
 };
@@ -1605,66 +1604,148 @@ struct pair_hash_function {
 
 
 /**Day 46 Thursday 1/6*/
-int rows[8] = {1, 0, -1, 0, 1, 1, -1, -1};
-int cols[8] = {0, 1, 0, -1, 1, -1, 1, -1};
+//int rows[8] = {1, 0, -1, 0, 1, 1, -1, -1};
+//int cols[8] = {0, 1, 0, -1, 1, -1, 1, -1};
+//
+//bool is_valid(int i, int j, int n, int m) {
+//    return i >= 0 && i < n && j >= 0 && j < m;
+//}
+//
+//
+//void visit_neighbours(queue<pair<int, int>> &bfs_queue, unordered_set<pair<int, int>, pair_hash_function> &visited,
+//                      vector<vector<int>> &grid, int i, int j) {
+//    int cur_row, cur_col;
+//    for (int cur = 0; cur < 8; cur++) {
+//        cur_row = i + rows[cur];
+//        cur_col = j + cols[cur];
+//        if (is_valid(cur_row, cur_col, grid.size(), grid[0].size())) {
+//            if (!grid[cur_row][cur_col] && !visited.count({cur_row, cur_col})) {
+//                bfs_queue.emplace(cur_row, cur_col);
+//                visited.insert({cur_row, cur_col});
+//            }
+//        }
+//    }
+//}
+//
+//
+//int shortestPathBinaryMatrix(vector<vector<int>> &grid) {
+//    int path = 0;
+//    queue<pair<int, int>> bfs_queue;
+//    int goal = grid.size() - 1;
+//    unordered_set<pair<int, int>, pair_hash_function> visited;
+//    if (grid[0][0])
+//        return -1;
+//    bfs_queue.emplace(0, 0);
+//    visited.insert({0, 0});
+//    int queue_size;
+//    int cur_i, cur_j;
+//    bool found = false;
+//    while (!bfs_queue.empty() && !found) {
+//        queue_size = bfs_queue.size();
+//        while (queue_size--) {
+//            cur_i = bfs_queue.front().first;
+//            cur_j = bfs_queue.front().second;
+//            if (cur_i == goal && cur_j == goal) {
+//                found = true;
+//                break;
+//            }
+//            visit_neighbours(bfs_queue, visited, grid, cur_i, cur_j);
+//            bfs_queue.pop();
+//        }
+//        path++;
+//    }
+//    if (cur_j == goal && cur_i == goal)
+//        return path;
+//    else
+//        return -1;
+//}
 
-bool is_valid(int i, int j, int n, int m) {
-    return i >= 0 && i < n && j >= 0 && j < m;
-}
+
+/**Day 47 Wednesday 14/6*/
+//struct TreeNode {
+//    int val;
+//    TreeNode *left;
+//    TreeNode *right;
+//
+//    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+//
+//    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+//
+//    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+//};
+//
+//class Solution {
+//public:
+//    int min_difference = INT_MAX;
+//    TreeNode *prev = nullptr;
+//
+//    void inorder(TreeNode *root) {
+//        if (!root)
+//            return;
+//        inorder(root->left);
+//        if (prev) {
+//            min_difference = min(min_difference, root->val - prev->val);
+//        }
+//        prev = root;
+//        inorder(root->right);
+//    }
+//
+//    int getMinimumDifference(TreeNode *root) {
+//        inorder(root);
+//        return min_difference;
+//    }
+//};
 
 
-void visit_neighbours(queue<pair<int, int>> &bfs_queue, unordered_set<pair<int, int>, pair_hash_function> &visited,
-                      vector<vector<int>> &grid, int i, int j) {
-    int cur_row, cur_col;
-    for (int cur = 0; cur < 8; cur++) {
-        cur_row = i + rows[cur];
-        cur_col = j + cols[cur];
-        if (is_valid(cur_row, cur_col, grid.size(), grid[0].size())) {
-            if (!grid[cur_row][cur_col] && !visited.count({cur_row, cur_col})) {
-                bfs_queue.emplace(cur_row, cur_col);
-                visited.insert({cur_row, cur_col});
+/**Day 48 Thursday 15/6*/
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
+
+class Solution {
+public:
+    int maxLevelSum(TreeNode *root) {
+        int max_sum = root->val;
+        int ans = 1;
+        queue<TreeNode *> bfs_queue;
+        if (root->left)
+            bfs_queue.push(root->left);
+        if (root->right)
+            bfs_queue.push(root->right);
+        int q_size, level_sum, current_level = 1;
+        TreeNode *current;
+        while (!bfs_queue.empty()) {
+            q_size = bfs_queue.size();
+            level_sum = 0;
+            while (q_size--) {
+                current = bfs_queue.front();
+                if (current->left)
+                    bfs_queue.push(current->left);
+                if (current->right)
+                    bfs_queue.push(current->right);
+                level_sum += current->val;
+                bfs_queue.pop();
+            }
+            current_level++;
+            if (level_sum > max_sum) {
+                max_sum = level_sum;
+                ans = current_level;
             }
         }
+        return ans;
     }
-}
-
-
-int shortestPathBinaryMatrix(vector<vector<int>> &grid) {
-    int path = 0;
-    queue<pair<int, int>> bfs_queue;
-    int goal = grid.size() - 1;
-    unordered_set<pair<int, int>, pair_hash_function> visited;
-    if (grid[0][0])
-        return -1;
-    bfs_queue.emplace(0, 0);
-    visited.insert({0, 0});
-    int queue_size;
-    int cur_i, cur_j;
-    bool found = false;
-    while (!bfs_queue.empty() && !found) {
-        queue_size = bfs_queue.size();
-        while (queue_size--) {
-            cur_i = bfs_queue.front().first;
-            cur_j = bfs_queue.front().second;
-            if (cur_i == goal && cur_j == goal) {
-                found = true;
-                break;
-            }
-            visit_neighbours(bfs_queue, visited, grid, cur_i, cur_j);
-            bfs_queue.pop();
-        }
-        path++;
-    }
-    if (cur_j == goal && cur_i == goal)
-        return path;
-    else
-        return -1;
-}
+};
 
 
 int main() {
-    vector<vector<int>> v = {{0, 0, 0},
-                             {1, 1, 1},
-                             {1, 1, 0}};
-    cout << shortestPathBinaryMatrix(v);
+//    TreeNode root(236, new TreeNode(104, nullptr, new TreeNode(227, nullptr, nullptr)),
+//                  new TreeNode(701, nullptr, new TreeNode(911, nullptr, nullptr)));
 }
