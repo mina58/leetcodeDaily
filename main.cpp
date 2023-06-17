@@ -9,6 +9,18 @@ struct pair_hash_function {
     }
 };
 
+int nCr(int n, int r) {
+    int up = 1, down = 1;
+    int i;
+    for (i = 1; i <= r; i++) {
+        down *= i;
+    }
+    for (; i <= n; i++) {
+        up *= i;
+    }
+    return up / down;
+}
+
 /**Day 1*/
 //bool validPosition(vector<vector<int>> &grid, int row, int col, int height, int width) {
 //    return row >= 0 && col >= 0 && row < height && col < width && grid[row][col];
@@ -1698,54 +1710,149 @@ struct pair_hash_function {
 
 
 /**Day 48 Thursday 15/6*/
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
+//struct TreeNode {
+//    int val;
+//    TreeNode *left;
+//    TreeNode *right;
+//
+//    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+//
+//    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+//
+//    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+//};
+//
+//class Solution {
+//public:
+//    int maxLevelSum(TreeNode *root) {
+//        int max_sum = root->val;
+//        int ans = 1;
+//        queue<TreeNode *> bfs_queue;
+//        if (root->left)
+//            bfs_queue.push(root->left);
+//        if (root->right)
+//            bfs_queue.push(root->right);
+//        int q_size, level_sum, current_level = 1;
+//        TreeNode *current;
+//        while (!bfs_queue.empty()) {
+//            q_size = bfs_queue.size();
+//            level_sum = 0;
+//            while (q_size--) {
+//                current = bfs_queue.front();
+//                if (current->left)
+//                    bfs_queue.push(current->left);
+//                if (current->right)
+//                    bfs_queue.push(current->right);
+//                level_sum += current->val;
+//                bfs_queue.pop();
+//            }
+//            current_level++;
+//            if (level_sum > max_sum) {
+//                max_sum = level_sum;
+//                ans = current_level;
+//            }
+//        }
+//        return ans;
+//    }
+//};
 
-    TreeNode() : val(0), left(nullptr), right(nullptr) {}
 
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+/**Day 48 Thursday 15/6*/
+//class Solution {
+//public:
+//    int numOfWays(vector<int>& nums) {
+//        int m = nums.size();
+//        // Table of Pascal's triangle
+//        table.resize(m + 1);
+//        for(int i = 0; i < m + 1; ++i) {
+//            table[i] = vector<long long>(i + 1, 1);
+//            for(int j = 1; j < i; ++j) {
+//                table[i][j] = (table[i - 1][j - 1] + table[i - 1][j]) % mod;
+//            }
+//        }
+//
+//        return (dfs(nums) - 1) % mod;
+//    }
+//
+//private:
+//    vector<vector<long long>> table;
+//    long long mod = 1e9 + 7;
+//
+//    long long dfs(vector<int> &nums){
+//        int m = nums.size();
+//        if(m < 3) {
+//            return 1;
+//        }
+//
+//        vector<int> leftNodes, rightNodes;
+//        for(int i = 1; i < m; ++i){
+//            if (nums[i] < nums[0]) {
+//                leftNodes.push_back(nums[i]);
+//            } else {
+//                rightNodes.push_back(nums[i]);
+//            }
+//        }
+//
+//        long long leftWays = dfs(leftNodes) % mod;
+//        long long rightWays = dfs(rightNodes) % mod;
+//
+//        return (((leftWays * rightWays) % mod) * table[m - 1][leftNodes.size()]) % mod;
+//    }
+//};
 
-    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
-};
 
-class Solution {
-public:
-    int maxLevelSum(TreeNode *root) {
-        int max_sum = root->val;
-        int ans = 1;
-        queue<TreeNode *> bfs_queue;
-        if (root->left)
-            bfs_queue.push(root->left);
-        if (root->right)
-            bfs_queue.push(root->right);
-        int q_size, level_sum, current_level = 1;
-        TreeNode *current;
-        while (!bfs_queue.empty()) {
-            q_size = bfs_queue.size();
-            level_sum = 0;
-            while (q_size--) {
-                current = bfs_queue.front();
-                if (current->left)
-                    bfs_queue.push(current->left);
-                if (current->right)
-                    bfs_queue.push(current->right);
-                level_sum += current->val;
-                bfs_queue.pop();
-            }
-            current_level++;
-            if (level_sum > max_sum) {
-                max_sum = level_sum;
-                ans = current_level;
+/**Day 49 Saturday 17/6*/
+int memo[2002][2002];
+const int MAX = 3000;
+
+int dp(vector<int> &arr1, vector<int> &arr2, int a1, int a2) {
+    if (a1 == arr1.size())
+        return memo[a1][a2] = 0;
+
+    while (a1 != 0 && a2 < arr2.size() && arr2[a2] <= arr1[a1 - 1])
+        a2++;
+
+    if (memo[a1][a2] != -1)
+        return memo[a1][a2];
+
+    if (a2 == arr2.size()) {
+        for (int i = a1; i != 0 && i < arr1.size(); i++) {
+            if (arr1[i] <= arr1[i - 1]) {
+                memo[a1][a2] = MAX;
+                return memo[a1][a2];
             }
         }
-        return ans;
+        memo[a1][a2] = 0;
+        return memo[a1][a2];
     }
-};
+
+    int pick, skip;
+    pick = skip = MAX;
+
+    if (a1 == 0 || arr1[a1] > arr1[a1 - 1])
+        skip = dp(arr1, arr2, a1 + 1, a2);
+
+    int temp = arr1[a1];
+    arr1[a1] = arr2[a2];
+    pick = 1 + dp(arr1, arr2, a1 + 1, a2 + 1);
+    arr1[a1] = temp;
+
+    memo[a1][a2] = min(pick, skip);
+    return memo[a1][a2];
+}
+
+int makeArrayIncreasing(vector<int> &arr1, vector<int> &arr2) {
+    sort(arr2.begin(), arr2.end());
+    memset(memo, -1, sizeof memo);
+    int ans =  dp(arr1, arr2, 0, 0);
+    if (ans >= MAX)
+        return -1;
+    return ans;
+}
 
 
 int main() {
-//    TreeNode root(236, new TreeNode(104, nullptr, new TreeNode(227, nullptr, nullptr)),
-//                  new TreeNode(701, nullptr, new TreeNode(911, nullptr, nullptr)));
+    vector<int> arr1 = {1,5,3,6,7};
+    vector<int> arr2 = {4,3,1};
+    cout << makeArrayIncreasing(arr1, arr2);
 }
