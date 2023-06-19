@@ -1802,57 +1802,112 @@ int nCr(int n, int r) {
 
 
 /**Day 49 Saturday 17/6*/
-int memo[2002][2002];
-const int MAX = 3000;
+//int memo[2002][2002];
+//const int MAX = 3000;
+//
+//int dp(vector<int> &arr1, vector<int> &arr2, int a1, int a2) {
+//    if (a1 == arr1.size())
+//        return memo[a1][a2] = 0;
+//
+//    if (a1 != 0) {
+//        auto a2_it = upper_bound(arr2.begin(), arr2.end(), arr1[a1 - 1]);
+//        a2 = a2_it - arr2.begin();
+//    }
+////    while (a1 != 0 && a2 < arr2.size() && arr2[a2] <= arr1[a1 - 1])
+////        a2++;
+//
+//    if (memo[a1][a2] != -1)
+//        return memo[a1][a2];
+//
+//    if (a2 == arr2.size()) {
+//        for (int i = a1; i != 0 && i < arr1.size(); i++) {
+//            if (arr1[i] <= arr1[i - 1]) {
+//                memo[a1][a2] = MAX;
+//                return memo[a1][a2];
+//            }
+//        }
+//        memo[a1][a2] = 0;
+//        return memo[a1][a2];
+//    }
+//
+//    int pick, skip;
+//    pick = skip = MAX;
+//
+//    if (a1 == 0 || arr1[a1] > arr1[a1 - 1])
+//        skip = dp(arr1, arr2, a1 + 1, a2);
+//
+//    int temp = arr1[a1];
+//    arr1[a1] = arr2[a2];
+//    pick = 1 + dp(arr1, arr2, a1 + 1, a2 + 1);
+//    arr1[a1] = temp;
+//
+//    memo[a1][a2] = min(pick, skip);
+//    return memo[a1][a2];
+//}
+//
+//int makeArrayIncreasing(vector<int> &arr1, vector<int> &arr2) {
+//    sort(arr2.begin(), arr2.end());
+//    memset(memo, -1, sizeof memo);
+//    int ans = dp(arr1, arr2, 0, 0);
+//    if (ans >= MAX)
+//        return -1;
+//    return ans;
+//}
 
-int dp(vector<int> &arr1, vector<int> &arr2, int a1, int a2) {
-    if (a1 == arr1.size())
-        return memo[a1][a2] = 0;
 
-    while (a1 != 0 && a2 < arr2.size() && arr2[a2] <= arr1[a1 - 1])
-        a2++;
+/**Day 50 Sunday 18/6*/
+//int memo[1000][1000] = {0};
+//int rows[] = {0, 0, -1, 1};
+//int cols[] = {-1, 1, 0, 0};
+//
+//int mod = 1e9 + 7;
+//
+//bool is_valid(int x, int y, vector<vector<int>>& grid){
+//    return x >= 0 && y >= 0 && x < grid.size() && y < grid[0].size();
+//}
+//
+//int dfs(vector<vector<int>>& grid, int x, int y){
+//    if (memo[x][y])
+//        return memo[x][y];
+//
+//    int next_row, next_col;
+//    int rv = 0;
+//    for (int i = 0; i < 4; i++) {
+//        next_row = x + rows[i];
+//        next_col = y + cols[i];
+//        if (is_valid(next_row, next_col, grid) && grid[next_row][next_col] > grid[x][y])
+//            rv += dfs(grid, next_row, next_col) % mod;
+//    }
+//
+//    return memo[x][y] = 1 + rv % mod;
+//}
+//
+//int countPaths(vector<vector<int>>& grid) {
+//    int ans = 0;
+//    for (int i = 0; i < grid.size(); i++) {
+//        for (int j = 0; j < grid[0].size(); j++) {
+//            if (!memo[i][j])
+//                dfs(grid, i, j);
+//            ans += memo[i][j] % mod;
+//            ans = ans % mod;
+//        }
+//    }
+//    return ans % mod;
+//}
 
-    if (memo[a1][a2] != -1)
-        return memo[a1][a2];
 
-    if (a2 == arr2.size()) {
-        for (int i = a1; i != 0 && i < arr1.size(); i++) {
-            if (arr1[i] <= arr1[i - 1]) {
-                memo[a1][a2] = MAX;
-                return memo[a1][a2];
-            }
-        }
-        memo[a1][a2] = 0;
-        return memo[a1][a2];
+/**Day 51 Monday 19/6*/
+int largestAltitude(vector<int>& gain) {
+    int ans = 0, cur = 0;
+    for (int i : gain) {
+        cur += i;
+        ans = max(ans, cur);
     }
-
-    int pick, skip;
-    pick = skip = MAX;
-
-    if (a1 == 0 || arr1[a1] > arr1[a1 - 1])
-        skip = dp(arr1, arr2, a1 + 1, a2);
-
-    int temp = arr1[a1];
-    arr1[a1] = arr2[a2];
-    pick = 1 + dp(arr1, arr2, a1 + 1, a2 + 1);
-    arr1[a1] = temp;
-
-    memo[a1][a2] = min(pick, skip);
-    return memo[a1][a2];
-}
-
-int makeArrayIncreasing(vector<int> &arr1, vector<int> &arr2) {
-    sort(arr2.begin(), arr2.end());
-    memset(memo, -1, sizeof memo);
-    int ans =  dp(arr1, arr2, 0, 0);
-    if (ans >= MAX)
-        return -1;
     return ans;
 }
 
 
 int main() {
-    vector<int> arr1 = {1,5,3,6,7};
-    vector<int> arr2 = {4,3,1};
-    cout << makeArrayIncreasing(arr1, arr2);
+    vector<vector<int>> v({{1, 2, 9}, {4, 5, 6}});
+    cout << countPaths(v);
 }
