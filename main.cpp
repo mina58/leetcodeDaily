@@ -1897,17 +1897,84 @@ int nCr(int n, int r) {
 
 
 /**Day 51 Monday 19/6*/
-int largestAltitude(vector<int>& gain) {
-    int ans = 0, cur = 0;
-    for (int i : gain) {
-        cur += i;
-        ans = max(ans, cur);
-    }
-    return ans;
+//int largestAltitude(vector<int>& gain) {
+//    int ans = 0, cur = 0;
+//    for (int i : gain) {
+//        cur += i;
+//        ans = max(ans, cur);
+//    }
+//    return ans;
+//}
+
+
+/**Day 52 Tuesday 20/6*/
+//vector<int> getAverages(vector<int>& nums, int k) {
+//    long long sum = 0;
+//    vector<int> ans(nums.size(), -1);
+//    for (int i = 0; i < 2 * k && i < nums.size(); i++) {
+//        sum += nums[i];
+//    }
+//
+//    for(int i = 2 * k; i < nums.size(); i++) {
+//        sum += nums[i];
+//        ans[i - k] = sum / (2 * k + 1);
+//        sum -= nums[i - 2 * k];
+//    }
+//    return ans;
+//}
+
+
+/**Day 53 Wednesday 21/6 WRONG, REVISIT*/
+//long long minCost(vector<int> &nums, vector<int> &cost) {
+//    vector<pair<int, int>> nums_costs;
+//    for (int i = 0; i < nums.size(); i++) {
+//        nums_costs.emplace_back(nums[i], cost[i]);
+//    }
+//
+//    sort(nums_costs.begin(), nums_costs.end());
+//    long long ans, cur = 0;
+//    for (int i = 1; i < nums.size(); i++) {
+//        cur += (long long)(nums_costs[i].first - nums_costs[0].first) * nums_costs[i].second;
+//    }
+//
+//    ans = cur;
+//
+//    for (int i = 1; i < nums.size(); i++) {
+//        cur -= (nums_costs[i].first - nums_costs[i - 1].first) * nums_costs[i].second;
+//        cur += (nums_costs[i].first - nums_costs[i - 1].first) * nums_costs[i - 1].second;
+//        ans = min(ans, cur);
+//    }
+//
+//    return ans;
+//}
+
+
+/**Day 54 Thursday 22/6*/
+int memo[50000][2];
+
+int dp(vector<int>& prices, int fee, int i, bool have_stock) {
+    if (i >= prices.size())
+        return 0;
+    if (~memo[i][have_stock])
+        return memo[i][have_stock];
+    int skip = dp(prices, fee, i + 1, have_stock);
+    int buy_sell;
+    if (!have_stock)
+        buy_sell = dp(prices, fee, i + 1, true) - prices[i];
+    else
+        buy_sell = dp(prices, fee, i + 1, false) + prices[i] - fee;
+
+    return memo[i][have_stock] = max(skip, buy_sell);
+}
+
+int maxProfit(vector<int>& prices, int fee) {
+    memset(memo, -1, sizeof memo);
+    return dp(prices, fee, 0, false);
 }
 
 
+
 int main() {
-    vector<vector<int>> v({{1, 2, 9}, {4, 5, 6}});
-    cout << countPaths(v);
+    vector<int> v = {1,3,7,5,10,3};
+    cout << maxProfit(v, 3);
 }
