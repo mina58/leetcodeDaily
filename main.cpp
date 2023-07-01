@@ -21,6 +21,15 @@ int nCr(int n, int r) {
     return up / down;
 }
 
+struct PairCompare {
+    bool operator()(const pair<int, int> &p1, const pair<int, int> &p2) {
+        if (p1.first == p2.first) {
+            return p2.second < p1.second;  // Sort by the second element in descending order
+        }
+        return p2.first < p1.first;  // Sort by the first element in ascending order
+    }
+};
+
 /**Day 1*/
 //bool validPosition(vector<vector<int>> &grid, int row, int col, int height, int width) {
 //    return row >= 0 && col >= 0 && row < height && col < width && grid[row][col];
@@ -1402,14 +1411,14 @@ int nCr(int n, int r) {
 /**Day 42 Friday 19/5*/
 //class Solution {
 //private:
-//    bool dfs(int node, vector<vector<int>>& graph, vector<int> &groups ,int group) {
+//    bool bfs(int node, vector<vector<int>>& graph, vector<int> &groups ,int group) {
 //        if (groups[node])
 //            return groups[node] == group;
 //
 //        groups[node] = group;
 //
 //        for (int neighbour : graph[node]) {
-//            if (!dfs(neighbour, graph, groups, 3 - group))
+//            if (!bfs(neighbour, graph, groups, 3 - group))
 //                return false;
 //        }
 //        return true;
@@ -1421,7 +1430,7 @@ int nCr(int n, int r) {
 //
 //        for (int node = 0; node < graph.size() && isBipartite; node++) {
 //            if (!groups[node]) {
-//                isBipartite = dfs(node, graph, groups, 1);
+//                isBipartite = bfs(node, graph, groups, 1);
 //            }
 //        }
 //        return isBipartite;
@@ -1505,7 +1514,7 @@ int nCr(int n, int r) {
 //    return i >= 0 && j >= 0 && i < n && j < n;
 //}
 //
-//void dfs(vector<vector<bool>> &visited, int i, int j, vector<vector<int>> &grid, queue<pair<int, int>> &bfs_queue) {
+//void bfs(vector<vector<bool>> &visited, int i, int j, vector<vector<int>> &grid, queue<pair<int, int>> &bfs_queue) {
 //    visited[i][j] = true;
 //    bfs_queue.emplace(i, j);
 //    for (int neighbour = 0; neighbour < 4; neighbour++) {
@@ -1513,7 +1522,7 @@ int nCr(int n, int r) {
 //        int neigh_col = j + cols[neighbour];
 //        int n = grid.size();
 //        if (isValid(neigh_row, neigh_col, n) && !visited[neigh_row][neigh_col] && grid[neigh_row][neigh_col])
-//            dfs(visited, neigh_row, neigh_col, grid, bfs_queue);
+//            bfs(visited, neigh_row, neigh_col, grid, bfs_queue);
 //    }
 //}
 //
@@ -1539,7 +1548,7 @@ int nCr(int n, int r) {
 //    for (int i = 0; i < n && !foundFirstIsland; i++) {
 //        for (int j = 0; j < n && !foundFirstIsland; j++) {
 //            if (grid[i][j]) {
-//                dfs(visited, i, j, grid, bfs_queue);
+//                bfs(visited, i, j, grid, bfs_queue);
 //                foundFirstIsland = true;
 //            }
 //        }
@@ -1771,14 +1780,14 @@ int nCr(int n, int r) {
 //            }
 //        }
 //
-//        return (dfs(nums) - 1) % mod;
+//        return (bfs(nums) - 1) % mod;
 //    }
 //
 //private:
 //    vector<vector<long long>> table;
 //    long long mod = 1e9 + 7;
 //
-//    long long dfs(vector<int> &nums){
+//    long long bfs(vector<int> &nums){
 //        int m = nums.size();
 //        if(m < 3) {
 //            return 1;
@@ -1793,8 +1802,8 @@ int nCr(int n, int r) {
 //            }
 //        }
 //
-//        long long leftWays = dfs(leftNodes) % mod;
-//        long long rightWays = dfs(rightNodes) % mod;
+//        long long leftWays = bfs(leftNodes) % mod;
+//        long long rightWays = bfs(rightNodes) % mod;
 //
 //        return (((leftWays * rightWays) % mod) * table[m - 1][leftNodes.size()]) % mod;
 //    }
@@ -1866,7 +1875,7 @@ int nCr(int n, int r) {
 //    return x >= 0 && y >= 0 && x < grid.size() && y < grid[0].size();
 //}
 //
-//int dfs(vector<vector<int>>& grid, int x, int y){
+//int bfs(vector<vector<int>>& grid, int x, int y){
 //    if (memo[x][y])
 //        return memo[x][y];
 //
@@ -1876,7 +1885,7 @@ int nCr(int n, int r) {
 //        next_row = x + rows[i];
 //        next_col = y + cols[i];
 //        if (is_valid(next_row, next_col, grid) && grid[next_row][next_col] > grid[x][y])
-//            rv += dfs(grid, next_row, next_col) % mod;
+//            rv += bfs(grid, next_row, next_col) % mod;
 //    }
 //
 //    return memo[x][y] = 1 + rv % mod;
@@ -1887,7 +1896,7 @@ int nCr(int n, int r) {
 //    for (int i = 0; i < grid.size(); i++) {
 //        for (int j = 0; j < grid[0].size(); j++) {
 //            if (!memo[i][j])
-//                dfs(grid, i, j);
+//                bfs(grid, i, j);
 //            ans += memo[i][j] % mod;
 //            ans = ans % mod;
 //        }
@@ -1950,31 +1959,355 @@ int nCr(int n, int r) {
 
 
 /**Day 54 Thursday 22/6*/
-int memo[50000][2];
+//int memo[50000][2];
+//
+//int dp(vector<int>& prices, int fee, int i, bool have_stock) {
+//    if (i >= prices.size())
+//        return 0;
+//    if (~memo[i][have_stock])
+//        return memo[i][have_stock];
+//    int skip = dp(prices, fee, i + 1, have_stock);
+//    int buy_sell;
+//    if (!have_stock)
+//        buy_sell = dp(prices, fee, i + 1, true) - prices[i];
+//    else
+//        buy_sell = dp(prices, fee, i + 1, false) + prices[i] - fee;
+//
+//    return memo[i][have_stock] = max(skip, buy_sell);
+//}
+//
+//int maxProfit(vector<int>& prices, int fee) {
+//    memset(memo, -1, sizeof memo);
+//    return dp(prices, fee, 0, false);
+//}
 
-int dp(vector<int>& prices, int fee, int i, bool have_stock) {
-    if (i >= prices.size())
-        return 0;
-    if (~memo[i][have_stock])
-        return memo[i][have_stock];
-    int skip = dp(prices, fee, i + 1, have_stock);
-    int buy_sell;
-    if (!have_stock)
-        buy_sell = dp(prices, fee, i + 1, true) - prices[i];
-    else
-        buy_sell = dp(prices, fee, i + 1, false) + prices[i] - fee;
 
-    return memo[i][have_stock] = max(skip, buy_sell);
-}
+/**Day 55 Saturday 24/6*/
+//class Solution {
+//    vector<int> rods;
+//    int memo[21][10001];
+//
+//    int solve(int i, int diff) {
+//        if (i == rods.size()) {
+//            if (diff == 5000)
+//                return 0;
+//            else
+//                return INT_MIN;
+//        }
+//        if (~memo[i][diff])
+//            return memo[i][diff];
+//
+//        return memo[i][diff] = max({
+//                                           solve(i + 1, diff),
+//                                           rods[i] + solve(i + 1, diff + rods[i]),
+//                                           solve(i + 1, diff - rods[i])
+//                                   });
+//    }
+//
+//public:
+//    int tallestBillboard(vector<int> &rods) {
+//        this->rods = rods;
+//        memset(memo, -1, sizeof memo);
+//        int ans = solve(0, 5000);
+//        if (ans < 0)
+//            return 0;
+//        else
+//            return ans;
+//    }
+//};
 
-int maxProfit(vector<int>& prices, int fee) {
-    memset(memo, -1, sizeof memo);
-    return dp(prices, fee, 0, false);
-}
+
+/**Day 56 Monday 26/6 WRONG*/
+//class Solution {
+//public:
+//    long long totalCost(vector<int>& costs, int k, int candidates) {
+//        if (costs.size() == 1)
+//            return costs[0];
+//        long long ans = 0;
+//        priority_queue<pair<int, int>, vector<pair<int, int>>, PairCompare> candidates_heap;
+//        int right, left, n;
+//        n = costs.size();
+//        left = 0, right = costs.size() - 1;
+//        for (int i = 0; i < candidates && right > left; i++) {
+//            if (right == left)
+//                candidates_heap.emplace(costs[i], i);
+//            else {
+//                candidates_heap.emplace(-costs[left], left);
+//                candidates_heap.emplace(-costs[right], right);
+//            }
+//            right--;
+//            left++;
+//        }
+//        pair<int, int> cur;
+//        while (k--) {
+//            cur = candidates_heap.top();
+//            ans += -cur.first;
+//            candidates_heap.pop();
+//            if (left <= right) {
+//                if (cur.second < left) {
+//                    candidates_heap.emplace(-costs[left], left);
+//                    left++;
+//                }
+//                else {
+//                    candidates_heap.emplace(-costs[right], right);
+//                    right--;
+//                }
+//            }
+//        }
+//        return ans;
+//    }
+//};
+
+
+/**Day 57 Wednesday 28/6*/
+//class Solution {
+//private:
+//    unordered_map<int, vector<pair<int, double>>> graph; // <source, neighbours>
+//    vector<pair<int, double>> path; // <source, prob>
+//    priority_queue<tuple<double, int, int>> frontier; // <probability, source, destination>
+//public:
+//    double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start, int end) {
+//        for (int i = 0; i < edges.size(); i++) {
+//            graph[edges[i][0]].emplace_back(edges[i][1], succProb[i]);
+//            graph[edges[i][1]].emplace_back(edges[i][0], succProb[i]);
+//        }
+//        path = vector<pair<int, double>>(n, {-1, 0});
+//        frontier.emplace(1, -1, start);
+//        double cost_cur;
+//        int src_cur, dst_cur;
+//        while (!frontier.empty()) {
+//            cost_cur = get<0>(frontier.top());
+//            src_cur = get<1>(frontier.top());
+//            dst_cur = get<2>(frontier.top());
+//            frontier.pop();
+//            if (cost_cur > path[dst_cur].second) {
+//                path[dst_cur] = make_pair(src_cur, cost_cur);
+//                for (pair<int, double> neighbour : graph[dst_cur]) {
+//                    frontier.emplace(neighbour.second * cost_cur, dst_cur, neighbour.first);
+//                }
+//            }
+//        }
+//        return path[end].second;
+//    }
+//};
+
+
+/**Day 58 Thursday 29/6*/
+//class Solution {
+//private:
+//    unordered_set<char> keys, locks;
+//    vector<vector<vector<bool>>> visited;
+//    vector<int> rows, cols;
+//
+//    int get_target_keys(vector<string> &grid) {
+//        int no_keys = 0;
+//        for (int i = 0; i < grid.size(); i++) {
+//            for (int j = 0; j < grid[0].size(); j++) {
+//                if (keys.count(grid[i][j]))
+//                    no_keys++;
+//            }
+//        }
+//        int target = 0;
+//        for (int i = 0; i < no_keys; i++)
+//            target |= 1 << i;
+//        return target;
+//    }
+//
+//    int convert_to_key(char c) {
+//        return 1 << (c - 'a');
+//    }
+//
+//    bool unlock(int keys, char lock) {
+//        return keys & (1 << (lock - 'A'));
+//    }
+//
+//    bool is_valid(int row_cur, int col_cur, int n, int m) {
+//        return (row_cur >= 0 && row_cur < n && col_cur >= 0 && col_cur < m);
+//    }
+//
+//    void add_to_queue(vector<string> &grid, int row_cur, int col_cur, int keys_next,
+//                      queue<pair<pair<int, int>, int>> &bfs_queue) {
+//        int row_next, col_next;
+//        for (int i = 0; i < 4; i++) {
+//            row_next = row_cur + rows[i];
+//            col_next = col_cur + cols[i];
+//            if (is_valid(row_next, col_next, grid.size(), grid[0].size()) && !visited[row_next][col_next][keys_next])
+//                bfs_queue.push({{row_next, col_next}, keys_next});
+//        }
+//    }
+//
+//    pair<int, int> get_start(vector<string> &grid) {
+//        for (int i = 0; i < grid.size(); i++)
+//            for (int j = 0; j < grid[0].size(); j++)
+//                if (grid[i][j] == '@')
+//                    return {i, j};
+//        return {-1, -1};
+//    }
+//
+//public:
+//    int shortestPathAllKeys(vector<string> &grid) {
+//        queue<pair<pair<int, int>, int>> bfs_queue; // <row, col, keys bitmask>
+//        keys = unordered_set<char>({'a', 'b', 'c', 'd', 'e', 'f'});
+//        locks = unordered_set<char>({'A', 'B', 'C', 'D', 'E', 'F'});
+//        rows = vector<int>({0, 1, 0, -1});
+//        cols = vector<int>({1, 0, -1, 0});
+//        int path_cost = 0;
+//        bool done = false;
+//        int row_cur, col_cur, keys_cur;
+//        int keys_next;
+//        char cell_cur;
+//        int n = grid.size(), m = grid[0].size();
+//        int target_keys = get_target_keys(grid);
+//        visited = vector<vector<vector<bool>>>(n, vector<vector<bool>>(m, vector<bool>(64, false)));
+//        bfs_queue.emplace(get_start(grid), 0);
+//        int queue_size;
+//        while (!bfs_queue.empty() && !done) {
+//            queue_size = bfs_queue.size();
+//            while (queue_size-- && !done) {
+//                row_cur = bfs_queue.front().first.first;
+//                col_cur = bfs_queue.front().first.second;
+//                keys_cur = bfs_queue.front().second;
+//                bfs_queue.pop();
+//                if (visited[row_cur][col_cur][keys_cur])
+//                    continue;
+//                cell_cur = grid[row_cur][col_cur];
+//                if (keys.count(cell_cur)) {
+//                    int key = convert_to_key(cell_cur);
+//                    keys_next = keys_cur | key;
+//                } else if ((locks.count(cell_cur) && !unlock(keys_cur, cell_cur)) || cell_cur == '#')
+//                    continue;
+//                else
+//                    keys_next = keys_cur;
+//                if (target_keys == keys_next) {
+//                    done = true;
+//                    continue;
+//                }
+//                add_to_queue(grid, row_cur, col_cur, keys_next, bfs_queue);
+//                visited[row_cur][col_cur][keys_next] = true;
+//            }
+//            path_cost += (!done);
+//        }
+//        if (done)
+//            return path_cost;
+//        return -1;
+//    }
+//};
+
+
+/**Day 59 Friday 30/6*/
+//class Solution {
+//private:
+//    vector<vector<bool>> graph;
+//    int cur_pos, n, m;
+//    vector<vector<int>> directions;
+//
+//    bool is_valid(int i, int j, vector<vector<bool>> &visited) {
+//        return i >= 0 && i < n && j >= 0 && j < m && !graph[i][j] && !visited[i][j];
+//    }
+//
+//    void add_to_queue(int row, int col, queue<pair<int, int>> &bfs_queue, vector<vector<bool>> &visited) {
+//        int row_next, col_next;
+//        for (int i = 0; i < 4; i++) {
+//            row_next = row + directions[i][0];
+//            col_next = col + directions[i][1];
+//            if (is_valid(row_next, col_next, visited)) {
+//                bfs_queue.emplace(row_next, col_next);
+//                visited[row_next][col_next] = true;
+//            }
+//        }
+//    }
+//
+//    bool bfs(){
+//        vector<vector<bool>> visited(n, vector<bool>(m, false));
+//        queue<pair<int, int>> bfs_queue;
+//        for (int i = 0; i < m; i++) {
+//            if (!graph[0][i]) {
+//                bfs_queue.emplace(0, i);
+//                visited[0][i] = true;
+//            }
+//        }
+//
+//        bool found = false;
+//        int row_cur, col_cur;
+//        while (!bfs_queue.empty() && !found) {
+//            row_cur = bfs_queue.front().first;
+//            col_cur = bfs_queue.front().second;
+//            bfs_queue.pop();
+//            if (row_cur == n - 1) {
+//                found = true;
+//                continue;
+//            }
+//            add_to_queue(row_cur, col_cur, bfs_queue, visited);
+//        }
+//        return found;
+//    }
+//
+//    void update_graph(int mid, vector<vector<int>>& cells) {
+//        if (mid < cur_pos) {
+//            for (int i = cur_pos; i > mid; i--)
+//                graph[cells[i][0] - 1][cells[i][1] - 1] = false;
+//        } else {
+//            for (int i = cur_pos; i <= mid; i++)
+//                graph[cells[i][0] - 1][cells[i][1] - 1] = true;
+//        }
+//    }
+//
+//public:
+//    int latestDayToCross(int row, int col, vector<vector<int>>& cells) {
+//        int left, right;
+//        cur_pos = 0;
+//        graph = vector<vector<bool>>(row, vector<bool>(col, false));
+//        directions = vector<vector<int>>({{-1, 0}, {0, -1}, {1, 0}, {0, 1}});
+//        n = row, m = col;
+//        left = 0, right = cells.size() - 1;
+//        int mid;
+//        while (left <= right) {
+//            mid = (left + right) / 2;
+//            update_graph(mid, cells);
+//            cur_pos = mid;
+//            if (bfs())
+//                left = mid + 1;
+//            else
+//                right = mid - 1;
+//        }
+//        return left;
+//    }
+//};
+
+
+/**Day 60 Saturday 1/7*/
+class Solution {
+private:
+    vector<int> split;
+    int min_fairness;
+    int children;
+    vector<int> cookies;
+    void solve(int cookie_cur, int max_cur) {
+        if (cookie_cur == cookies.size()) {
+            min_fairness = min(min_fairness, max_cur);
+            return;
+        }
+        for (int i = 0; i < children; i++) {
+            split[i] += cookies[cookie_cur];
+            solve(cookie_cur + 1, max(max_cur, split[i]));
+            split[i] -= cookies[cookie_cur];
+        }
+    }
+public:
+    int distributeCookies(vector<int>& cookies, int k) {
+        split = vector<int>(k, 0);
+        min_fairness = INT_MAX;
+        children = k;
+        this->cookies = cookies;
+        solve(0, 0);
+        return min_fairness;
+    }
+};
 
 
 
 int main() {
-    vector<int> v = {1,3,7,5,10,3};
-    cout << maxProfit(v, 3);
+    vector<int> v = {6,1,3,2,2,4,1,2};
+    Solution sol;
+    cout << sol.distributeCookies(v, 3);
 }
