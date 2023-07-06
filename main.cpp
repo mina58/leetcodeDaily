@@ -2366,6 +2366,7 @@ public:
         int ans = INT_MAX;
         int l{0}, r{0};
         int cur = nums[0];
+
         while (cur < target && r + 1 < nums.size()) {
             r++;
             cur += nums[r];
