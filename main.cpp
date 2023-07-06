@@ -2276,38 +2276,123 @@ struct PairCompare {
 
 
 /**Day 60 Saturday 1/7*/
+//class Solution {
+//private:
+//    vector<int> split;
+//    int min_fairness;
+//    int children;
+//    vector<int> cookies;
+//    void solve(int cookie_cur, int max_cur) {
+//        if (cookie_cur == cookies.size()) {
+//            min_fairness = min(min_fairness, max_cur);
+//            return;
+//        }
+//        for (int i = 0; i < children; i++) {
+//            split[i] += cookies[cookie_cur];
+//            solve(cookie_cur + 1, max(max_cur, split[i]));
+//            split[i] -= cookies[cookie_cur];
+//        }
+//    }
+//public:
+//    int distributeCookies(vector<int>& cookies, int k) {
+//        split = vector<int>(k, 0);
+//        min_fairness = INT_MAX;
+//        children = k;
+//        this->cookies = cookies;
+//        solve(0, 0);
+//        return min_fairness;
+//    }
+//};
+
+
+/**Day 61 Monday 3/7*/
+//class Solution {
+//public:
+//    bool buddyStrings(string s, string goal) {
+//        if (s.size() != goal.size())
+//            return false;
+//        int count = 0;
+//        int alpha[26] = {0};
+//        int c1;
+//        for (int i = 0; i < s.size() && count < 3; i++) {
+//            if (s[i] != goal[i]) {
+//                if (count == 1) {
+//                    if (!(s[i] == goal[c1] && goal[i] == s[c1]))
+//                        return false;
+//                } else if (count == 0)
+//                    c1 = i;
+//                count++;
+//            }
+//            alpha[s[i] - 'a']++;
+//        }
+//        if (count == 0) {
+//            for (int i : alpha)
+//                if (i >= 2)
+//                    return true;
+//            return false;
+//        }
+//        return count == 2;
+//    }
+//};
+
+
+/**Day 62 Wednesday 5/7*/
+//class Solution {
+//public:
+//    int longestSubarray(vector<int>& nums) {
+//        int ans = 0, before = 0, cur = 0;
+//        for (int num : nums) {
+//            if (num == 1) {
+//                cur++;
+//            } else {
+//                ans = max(ans, cur + before);
+//                before = cur;
+//                cur = 0;
+//            }
+//        }
+//        ans = max(ans, cur + before);
+//        if (cur == nums.size())
+//            return cur - 1;
+//        else
+//            return ans;
+//    }
+//};
+
+
+/**Day 63 Thursday 6/7*/
 class Solution {
-private:
-    vector<int> split;
-    int min_fairness;
-    int children;
-    vector<int> cookies;
-    void solve(int cookie_cur, int max_cur) {
-        if (cookie_cur == cookies.size()) {
-            min_fairness = min(min_fairness, max_cur);
-            return;
-        }
-        for (int i = 0; i < children; i++) {
-            split[i] += cookies[cookie_cur];
-            solve(cookie_cur + 1, max(max_cur, split[i]));
-            split[i] -= cookies[cookie_cur];
-        }
-    }
 public:
-    int distributeCookies(vector<int>& cookies, int k) {
-        split = vector<int>(k, 0);
-        min_fairness = INT_MAX;
-        children = k;
-        this->cookies = cookies;
-        solve(0, 0);
-        return min_fairness;
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int ans = INT_MAX;
+        int l{0}, r{0};
+        int cur = nums[0];
+        while (cur < target && r + 1 < nums.size()) {
+            r++;
+            cur += nums[r];
+        }
+        if (cur < target)
+            return 0;
+        while (r < nums.size()) {
+            if (cur >= target) {
+                if (l == r)
+                    return 1;
+                ans = min(ans, r - l + 1);
+                cur -= nums[l++];
+            } else {
+                if (r == nums.size() - 1)
+                    return ans;
+                cur += nums[++r];
+            }
+        }
+        return ans;
     }
 };
 
 
 
+
 int main() {
-    vector<int> v = {6,1,3,2,2,4,1,2};
+    vector<int> v = {2,3,1,2,4,3};
     Solution sol;
-    cout << sol.distributeCookies(v, 3);
+    cout << sol.minSubArrayLen(7, v);
 }
