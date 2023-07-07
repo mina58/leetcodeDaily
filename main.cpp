@@ -2360,40 +2360,72 @@ struct PairCompare {
 
 
 /**Day 63 Thursday 6/7*/
-class Solution {
-public:
-    int minSubArrayLen(int target, vector<int>& nums) {
-        int ans = INT_MAX;
-        int l{0}, r{0};
-        int cur = nums[0];
+//class Solution {
+//public:
+//    int minSubArrayLen(int target, vector<int>& nums) {
+//        int ans = INT_MAX;
+//        int l{0}, r{0};
+//        int cur = nums[0];
+//
+//        while (cur < target && r + 1 < nums.size()) {
+//            r++;
+//            cur += nums[r];
+//        }
+//        if (cur < target)
+//            return 0;
+//        while (r < nums.size()) {
+//            if (cur >= target) {
+//                if (l == r)
+//                    return 1;
+//                ans = min(ans, r - l + 1);
+//                cur -= nums[l++];
+//            } else {
+//                if (r == nums.size() - 1)
+//                    return ans;
+//                cur += nums[++r];
+//            }
+//        }
+//        return ans;
+//    }
+//};
 
-        while (cur < target && r + 1 < nums.size()) {
-            r++;
-            cur += nums[r];
-        }
-        if (cur < target)
-            return 0;
-        while (r < nums.size()) {
-            if (cur >= target) {
-                if (l == r)
-                    return 1;
-                ans = min(ans, r - l + 1);
-                cur -= nums[l++];
-            } else {
-                if (r == nums.size() - 1)
-                    return ans;
-                cur += nums[++r];
+
+/**Day 64 Friday 7/7*/
+class Solution {
+private:
+    int solve(string answerKey, int k, char letter) {
+        int r, l;
+        l = 0, r = 1;
+        int cur = 1;
+        int ans = 1;
+        if (answerKey[0] != letter)
+            k--;
+        while (r < answerKey.size()) {
+            while (r < answerKey.size() && (k || answerKey[r] == letter)) {
+                if (answerKey[r++] != letter) {
+                    k--;
+                }
+                cur++;
+            }
+            ans = max(ans, cur);
+            while (!k) {
+                if (answerKey[l++] != letter)
+                    k++;
+                cur--;
             }
         }
         return ans;
     }
+public:
+    int maxConsecutiveAnswers(string answerKey, int k) {
+        return max(solve(answerKey, k, 'T'), solve(answerKey, k, 'F'));
+    }
 };
-
 
 
 
 int main() {
     vector<int> v = {2,3,1,2,4,3};
     Solution sol;
-    cout << sol.minSubArrayLen(7, v);
+    cout << sol.maxConsecutiveAnswers("TF", 5);
 }
