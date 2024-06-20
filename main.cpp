@@ -2391,41 +2391,470 @@ struct PairCompare {
 
 
 /**Day 64 Friday 7/7*/
-class Solution {
-private:
-    int solve(string answerKey, int k, char letter) {
-        int r, l;
-        l = 0, r = 1;
-        int cur = 1;
-        int ans = 1;
-        if (answerKey[0] != letter)
-            k--;
-        while (r < answerKey.size()) {
-            while (r < answerKey.size() && (k || answerKey[r] == letter)) {
-                if (answerKey[r++] != letter) {
-                    k--;
-                }
-                cur++;
-            }
-            ans = max(ans, cur);
-            while (!k) {
-                if (answerKey[l++] != letter)
-                    k++;
-                cur--;
-            }
-        }
-        return ans;
-    }
-public:
-    int maxConsecutiveAnswers(string answerKey, int k) {
-        return max(solve(answerKey, k, 'T'), solve(answerKey, k, 'F'));
-    }
-};
+//class Solution {
+//private:
+//    int solve(string answerKey, int k, char letter) {
+//        int r, l;
+//        l = 0, r = 1;
+//        int cur = 1;
+//        int ans = 1;
+//        if (answerKey[0] != letter)
+//            k--;
+//        while (r < answerKey.size()) {
+//            while (r < answerKey.size() && (k || answerKey[r] == letter)) {
+//                if (answerKey[r++] != letter) {
+//                    k--;
+//                }
+//                cur++;
+//            }
+//            ans = max(ans, cur);
+//            while (!k) {
+//                if (answerKey[l++] != letter)
+//                    k++;
+//                cur--;
+//            }
+//        }
+//        return ans;
+//    }
+//public:
+//    int maxConsecutiveAnswers(string answerKey, int k) {
+//        return max(solve(answerKey, k, 'T'), solve(answerKey, k, 'F'));
+//    }
+//};
 
+
+/**Thursday 6/10*/
+//class Solution {
+//private:
+//    int dp[100] = {0};
+//    int solve(int n) {
+//        if (dp[n])
+//            return dp[n];
+//        int ans = n - 1;
+//        for (int i = 1; i <= n; i++) {
+//            ans = max(ans, i * solve(n - i));
+//        }
+//        return dp[n] = ans;
+//    }
+//public:
+//    int integerBreak(int n) {
+//        if (n == 2 || n == 3)
+//            return n - 1;
+//        dp[0] = 1; dp[1] = 1;
+//        return solve(n);
+//    }
+//};
+
+
+/**Friday 3/11*/
+//class Solution {
+//public:
+//    vector<string> buildArray(vector<int>& target, int n) {
+//        stack<int> my_stack;
+//        my_stack.push(0);
+//        vector<string> ans;
+//        ans.reserve(n);
+//        int i = 0, counter = 0;
+//        int target_size = target.size();
+//        while (i < target_size) {
+//            counter = 0;
+//            while (target[i] > my_stack.top()) {
+//
+//            }
+//        }
+//    }
+//};
+
+
+/**Wednesday 24/1/2024*/
+//Definition for a binary tree node.
+//struct TreeNode {
+//    int val;
+//    TreeNode *left;
+//    TreeNode *right;
+//    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+//    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+//    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+//};
+//
+//class Solution {
+//private:
+//    void insert_to_current(unordered_set<int>& current_nums, int val) {
+//        if (current_nums.count(val)) {
+//            current_nums.erase(val);
+//        } else {
+//            current_nums.insert(val);
+//        }
+//    }
+//public:
+//    int no_of_palindromic_paths(TreeNode* root, unordered_set<int>& current_nums) {
+//        int left_palins = 0, right_palins = 0;
+//
+//        insert_to_current(current_nums, root->val);
+//
+//        if (!root->left && !root->right) {
+//            bool is_palin = current_nums.size() < 2;
+//            insert_to_current(current_nums, root->val);
+//            return is_palin;
+//        }
+//
+//        if (root->left) {
+//            left_palins = no_of_palindromic_paths(root->left, current_nums);
+//        }
+//
+//        if (root->right) {
+//            right_palins = no_of_palindromic_paths(root->right, current_nums);
+//        }
+//
+//        insert_to_current(current_nums, root->val);
+//        return left_palins + right_palins;
+//    }
+//
+//    int pseudoPalindromicPaths (TreeNode* root) {
+//        unordered_set<int> current_nums;
+//        return no_of_palindromic_paths(root, current_nums);
+//    }
+//};
+
+
+/**Thursday 25/1/2024*/
+//class Solution {
+//private:
+//    vector<vector<int>> mem;
+//    string t1, t2;
+//
+//    int dp(int i, int j) {
+//        int val = 0;
+//        if (i == t1.size() || j == t2.size()) {
+//            return 0;
+//        }
+//
+//        if (~mem[i][j]) {
+//            return mem[i][j];
+//        }
+//
+//        if (t1[i] == t2[j]) {
+//            return mem[i][j] = 1 + dp(i + 1, j + 1);
+//        } else {
+//            return mem[i][j] = max(dp(i + 1, j), dp(i, j + 1));
+//        }
+//
+//
+//    }
+//
+//public:
+//    int longestCommonSubsequence(string text1, string text2) {
+//        mem = vector<vector<int>>(text1.size() + 1, vector<int>(text2.size() + 1, -1));
+//        t1 = text1;
+//        t2 = text2;
+//
+//        return dp(0, 0);
+//    }
+//};
+
+
+/**Friday 26/1/2024*/
+//typedef long long ll;
+//class Solution {
+//private:
+//    vector<vector<vector<ll>>> mem;
+//    ll mod = 1e9 + 7;
+//
+//    ll dp(int i, int j, int moves, int m, int n) {
+//        if (i < 0 || j < 0 || i == m || j == n)
+//            return 1;
+//
+//        if (~mem[i][j][moves])
+//            return mem[i][j][moves];
+//
+//        if (moves == 0)
+//            return 0;
+//
+//        return mem[i][j][moves] = (
+//                dp(i - 1, j, moves - 1, m, n) % mod +
+//                dp(i, j - 1, moves - 1, m, n) % mod +
+//                dp(i + 1, j, moves - 1, m, n) % mod +
+//                dp(i, j + 1, moves - 1, m, n) % mod
+//        ) % mod;
+//
+//    }
+//public:
+//    int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
+//        mem = vector<vector<vector<ll>>>(m + 1, vector<vector<ll>>(n + 1, vector<ll>(maxMove + 1, -1)));
+//        return dp(startRow, startColumn, maxMove, m, n);
+//    }
+//};
+
+
+/**Saturday 27/1/2024*/
+//class Solution {
+//private:
+//    vector<vector<int>> mem;
+//    const int mod = 1e9 + 7;
+//
+//    int dp(int n, int k) {
+//        if (n < 0 || k < 0)
+//            return 0;
+//
+//        if (~mem[n][k])
+//            return mem[n][k];
+//
+//        if (n == 0)
+//            return k == 0;
+//
+//        int sum = 0;
+//        for (int i = 0; i < n; i++)
+//            sum = (sum + (dp(n - 1, k - i) % mod)) % mod;
+//        return mem[n][k] = sum;
+//    }
+//
+//public:
+//    int kInversePairs(int n, int k) {
+//        mem = vector<vector<int>>(n + 1, vector<int>(k + 1, -1));
+//        return dp(n, k);
+//    }
+//};
+
+
+/**Sunday 28/1/2024*/
+/** RETURN TO*/
+//class Solution {
+//public:
+//    int numSubmatrixSumTarget(vector<vector<int>>& matrix, int target) {
+//        int m = matrix.size(), n = matrix[0].size();
+//        int ans = 0;
+//        vector<vector<int>> main_mat(m, vector<int>(n, 0));
+//        for (int i = 0; i < m; i++) {
+//            for (int j = 0; j < n; j++) {
+//                main_mat[i][j] += matrix[i][j];
+//                if (i > 0)
+//                    main_mat[i][j] += main_mat[i - 1][j];
+//                if (j > 0)
+//                    main_mat[i][j] += main_mat[i][j - 1];
+//                if (i > 0 && j > 0)
+//                    main_mat[i][j] -= main_mat[i - 1][j - 1];
+//
+//            }
+//        }
+//        int cur;
+//
+//        for (int i = 0; i < m; i++) {
+//            for (int j = 0; j < n; j++) {
+//                for (int row = i; row < m; row++){
+//                    for(int col = j; col < n; col++) {
+//                        if (row == i && col == j)
+//                            continue;
+//                        cur = main_mat[row][col];
+//                        if (i > 0)
+//                            cur -= main_mat[i - 1][j];
+//                        if (j > 0)
+//                            cur -= main_mat[i][j - 1];
+//                        ans += (cur == target);
+//                    }
+//                }
+//            }
+//        }
+//
+//        return ans;
+//
+//    }
+//};
+
+
+/**Tuesday 30/1/2024*/
+//class Solution {
+//public:
+//    int evalRPN(vector<string>& tokens) {
+//        stack<int> stack;
+//
+//        int num1, num2;
+//        for (const string& token : tokens) {
+//            if (token == "+" || token == "-" || token == "*" || token == "/") {
+//                num1 = stack.top();
+//                stack.pop();
+//                num2 = stack.top();
+//                stack.pop();
+//                if (token == "+") {
+//                    stack.push(num2 + num1);
+//                } else if (token == "-") {
+//                    stack.push(num2 - num1);
+//                } else if (token == "*") {
+//                    stack.push(num2 * num1);
+//                } else {
+//                    stack.push(num2 / num1);
+//                }
+//            } else {
+//                stack.push(stoi(token));
+//            }
+//        }
+//        return stack.top();
+//    }
+//};
+
+
+/**Thursday 1/2/2024*/
+//class Solution {
+//public:
+//    vector<vector<int>> divideArray(vector<int>& nums, int k) {
+//        sort(nums.begin(), nums.end());
+//        vector<vector<int>> ans(nums.size()/3, vector<int>(3, 0));
+//        for (int i = 0; i < nums.size(); i += 3) {
+//            if (nums[i + 2] - nums[i] > k )
+//                return vector<vector<int>>({});
+//            ans[i/3][0] = nums[i];
+//            ans[i/3][1] = nums[i + 1];
+//            ans[i/3][2] = nums[i + 2];
+//        }
+//        return ans;
+//    }
+//};
+
+
+/**Friday 2/2/2024*/
+//class Solution {
+//private:
+//    int starting_nums[9] = {12, 123, 1234, 12345, 123456, 1234567, 12345678, 123456789, INT_MAX};
+//    int additions[9] = {11, 111, 1111, 11111, 111111, 1111111, 11111111, 111111111, INT_MAX};
+//    int stopping_nums[9] = {89, 789, 6789, 56789, 456789, 3456789, 23456789, 123456789, INT_MIN};
+//    int cur_i = 0;
+//    int next_seq(int cur) {
+//        if (cur + additions[cur_i] > stopping_nums[cur_i])
+//            return starting_nums[++cur_i];
+//        else
+//            return cur + additions[cur_i];
+//    }
+//public:
+//
+//    vector<int> sequentialDigits(int low, int high) {
+//        vector<int> ans;
+//        int cur = 12;
+//        while (cur < low) {
+//            cur = next_seq(cur);
+//        }
+//        while (cur <= high) {
+//            ans.push_back(cur);
+//            cur = next_seq(cur);
+//        }
+//        return ans;
+//    }
+//};
+
+
+/**Saturday 3/2/2024*/
+//class Solution {
+//private:
+//    int dp[501] = {0};
+//
+//    int solve(vector<int> &arr, int cur, int k) {
+//        if (cur >= arr.size())
+//            return 0;
+//
+//        if (dp[cur])
+//            return dp[cur];
+//
+//        int cur_max = arr[cur];
+//        int ans = -1;
+//        for (int i = 0; i < k && cur + i < arr.size(); i++) {
+//            cur_max = max(cur_max, arr[cur + i]);
+//            ans = max(ans, cur_max * (i + 1) + solve(arr, cur + i + 1, k));
+//        }
+//        return dp[cur] = ans;
+//    }
+//public:
+//    int maxSumAfterPartitioning(vector<int>& arr, int k) {
+//        return solve(arr, 0, k);
+//    }
+//};
+
+
+/**Wednesday 19/6/2024*/
+//class Solution {
+//public:
+//    int minDays(vector<int>& bloomDay, int m, int k) {
+//        if (m * k > bloomDay.size())
+//            return -1;
+//
+//        int cur, max, min, count, bouquets, ans;
+//        max = *max_element(bloomDay.begin(), bloomDay.end());
+//        min = *min_element(bloomDay.begin(), bloomDay.end());
+//        cur = (max + min) / 2;
+//
+//        while (max > min) {
+//            cur = (max + min) / 2;
+//            bouquets = count = 0;
+//
+//
+//            for (int i = 0; i < bloomDay.size(); i++) {
+//                if (bloomDay[i] <= cur) {
+//                    count++;
+//                } else {
+//                    count = 0;
+//                }
+//                if (count == k) {
+//                    bouquets++;
+//                    count = 0;
+//                }
+//            }
+//            if (bouquets >= m) {
+//                ans = m;
+//                max = cur - 1;
+//            } else {
+//                min = cur + 1;
+//            }
+//        }
+//        return ans;
+//    }
+//};
+
+
+
+/**Thursday 20/6/2024*/
+//class Solution {
+//private:
+//    void difference(vector<int>& position) {
+//        int prev = position[0], cur;
+//        position[0] = 0;
+//        for (int i = 1; i < position.size(); i++) {
+//            cur = position[i] - prev;
+//            prev = position[i];
+//            position[i] = cur;
+//        }
+//    }
+//
+//    bool is_possible(vector<int>& position, int space, int m) {
+//        int count = 0;
+//        int cur_sum = 0;
+//        for (int i : position) {
+//            cur_sum += i;
+//            if (cur_sum >= space) {
+//                count++;
+//                cur_sum = 0;
+//            }
+//        }
+//        return count >= m - 1;
+//    }
+//public:
+//    int maxDistance(vector<int>& position, int m) {
+//        sort(position.begin(), position.end());
+//        int left = 1, right = position[position.size() - 1] - position[0];
+//        difference(position);
+//        int cur_ans, mid;
+//        while (right >= left) {
+//            mid = (right + left) / 2;
+//            if (is_possible(position, mid, m)) {
+//                cur_ans = mid;
+//                left = mid + 1;
+//            } else {
+//                right = mid - 1;
+//            }
+//        }
+//        return cur_ans;
+//    }
+//};
 
 
 int main() {
-    vector<int> v = {2,3,1,2,4,3};
+    vector<int> v({79,74,57,22});
     Solution sol;
-    cout << sol.maxConsecutiveAnswers("TF", 5);
+    cout << sol.maxDistance(v, 4);
 }
